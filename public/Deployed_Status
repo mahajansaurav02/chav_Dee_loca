@@ -1,0 +1,114 @@
+21/03/2024
+-----------
+1. pie chart logic and pie-chart change  for "मागणी निश्चित झालेली खातेदार संख्या % मध्ये"
+                                              मागणी निश्चित न झालेली खातेदार संख्या % मध्ये
+2. pie chart logic and pie-chart change  for वसुली पूर्ण झालेली खातेदार संख्या % मध्ये
+                                             वसुली पूर्ण न झालेली खातेदार संख्या % मध्ये
+3. pie chart logic and pie-chart change  for Against जमाबंदी.
+ 
+ backend changes also done for the count
+
+
+
+
+on Date 15/03/2023
+------------------
+
+1. Thalithi Dashboard two column data is mapped.
+2. Form17 area=0 mapping
+3. ASC/DSC DYSLY entry
+4. Collecor login All-Village-Serarch-Data1   23,24,25,26 column Color green and col form14 Col green
+
+
+Form 17
+--------
+
+1. villageForm17.table.assessment and villageForm17.table.amountOfLR  both have integer and character
+
+
+on Date 1/04/2023
+-----------------
+पावती प्रत year logic implemented
+
+Form 17
+--------
+1. error message already recipt generated
+
+
+on Date 9/4/2024
+-----------------
+ ००२९  आणि ००४५ यापैकी  एकच चलन अपलोड केले असता दुसरी चलन अपलोड करणे.
+
+
+ on Date 22/04/2024
+ -------------------
+ In reports Form1-E purposeOfEncroachmentLand error solved in reports/village-form-1E
+
+  on Date 15/07/2024
+ -------------------
+ In DYSLR LASt cokumn count and total Count for Division and District is corrected.
+
+
+
+On Date 16/07/2024
+-------------------
+//---Form area 0
+totalArea: res.data.form17Data[0].totalArea,
+path :src\pages\transactions\receive-money\index.jsx
+
+
+on 29/07/2024
+----------------
+1. Tab1 title change ई-चावडी कामकाज प्रगती अहवाल
+2. Tab 2 उप भूमि अधीक्षक प्रगती अहवाल (DYSLR)----उप-अधीक्षक भूमिअभिलेख  यांनी  आकारबंद भरण्यासाठी कामकाज सुरु केलेल्या गावांची संख्या
+
+
+on 03/08/2024
+--------------
+ई-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने वसुली न करणाऱ्या गावांची संख्या--village count pre and current year
+challan list of year
+
+
+on 19/09/2024
+--------------
+On MIS previous year onClick Report is open
+
+on 10 Sep 2024
+----------------
+1. On Form 8B previous logic is active
+
+on 14 OCT 2024
+---------------
+1. EGS Change Exact 5 condition
+3. Survey number wrap in form 1.pavti tayar kara 2.magni tapshil
+
+
+on 21 OCT 2024
+---------------
+1. Talathi name change. तलाठी to ग्राम महसूल अधिकारी on forms :
+    1. Form 1 Abstract
+    2. गाव नमुना एकोणीस
+    3. गाव नमुना १अ
+    4. खाता एकत्रीकरण (tip)
+    5. Recipt print (जमीन महसूलाची पावती)
+    6. Demand Details
+    7. पावती तयार करा
+
+on 25 OCT 2024
+---------------
+1. मागणी तपशील on basis of खाता क्रमांक or मक्ताखाता क्रमांक details fetch
+2. and Print the Details
+3. गाव नमुना आठ-ब  मधील एकूण बरोबर आहे.परंतु  वसुली केलेली एकूण च्या बाबा निहाय रक्कमा चुकत नाही.
+
+on 11NOV 2024
+----------------
+village-form-17Abstract  api change
+form17NoKaJaPa/getDetailByKhataNoKaJaPa
+
+on 11 NOV 2024
+---------------
+1.  संबंधित क्षेत्र  2.स्‍थानिक उपकरांसह 3.प्रकरण क्रमांक मध्ये माहिती भरण्यासाठी  अनिवार्य करण्यात यावे. 
+
+on 12 NOV 2024
+---------------
+गाव नमुना एक Dyslr(आकारबंद दुरुस्ती)
