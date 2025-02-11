@@ -11,7 +11,7 @@ function villageSelection(props) {
   const [village, setVillage] = useState([]);
   const [codeVillage, setCodeVillage] = useState();
   const [textForVillage, setTextForVillage] = useState();
-  const [revenueYear1, setRevenueYear1] = useState();
+  const [revenueYear1, setRevenueYear1] = useState('2024-25');
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
   const [form] = Form.useForm();
   let history = useHistory();
@@ -120,7 +120,8 @@ function villageSelection(props) {
                 label={<FormattedMessage id="villageSelector.label.revenueYear" />}
               >
                 <Select
-                  // style={{ width: 200, marginRight: '15px' }}
+                  // style={{ width: 200, marginRight: '15px' }}'
+                  value={revenueYear1}
                   options={revenueYearForVillage}
                   placeholder={'महसूल वर्ष'}
                   onSelect={(value, event) => onYearChange(value, event)}

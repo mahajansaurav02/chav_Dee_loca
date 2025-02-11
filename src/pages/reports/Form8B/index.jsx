@@ -27,7 +27,7 @@ function Report8B() {
 
   const [tableData, setTableData] = useState();
   const history = useHistory();
-  const [revenueYear, setRevenueYear] = useState();
+  const [revenueYear, setRevenueYear] = useState('2024-25');
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
@@ -201,7 +201,7 @@ function Report8B() {
               <Select
                 // style={{ width: 200, marginRight: '15px' }}
                 // options={revenueYearForVillage}
-                // value={revenueYearForVillage}
+                value={revenueYear}
                 placeholder={'महसूल वर्ष'}
                 onChange={(value, event) => onYearChange(value, event)}
                 // disabled
