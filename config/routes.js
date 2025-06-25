@@ -19,6 +19,20 @@ export default [
     ],
   },
   {
+    path: '/collectorMisPage',
+    layout: false,
+    routes: [
+      {
+        path: '/collectorMisPage',
+        name: 'Collector MIS',
+        component: 'C:\VIPL\Frontend\Live_as_UAT_eChawdi_frontend_19DEC2024\Live_as_UAT_eChawdi_frontend_19DEC2024\src\pages\dashboard\collectorMis\index.jsx',
+      },
+      {
+        component: './404',
+      },
+    ],
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',

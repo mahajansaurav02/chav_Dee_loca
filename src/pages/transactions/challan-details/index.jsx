@@ -297,7 +297,7 @@ function ChallanDetails() {
   const saveChallanMethod = async () => {
     if (modalButtonState == 'Not Deposited') {
       await Axios.put(
-        `${URLS.BaseURL}/landRevenue/updateChallanDetails?id=${dataInModal.id}&bankAddress=${dataInModal.bankAddress}&bankName=${dataInModal.bankName}&bankReceiptNumber=${dataInModal.bankReceiptNumber}&bankReceiptNumber0045=${dataInModal.bankReceiptNumber0045}`,
+        `${URLS.BaseURL1}new/application/save`,
         formData,
         //formData1,
         {

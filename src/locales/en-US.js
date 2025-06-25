@@ -50,6 +50,8 @@ import form9b from './en-US/form9b';
 import Villagelevelofficials from './en-US/Villagelevelofficials';
 import loginpage from './en-US/loginpage';
 import OneTimeDataEntryReport from './en-US/OneTimeDataEntryReport';
+import Villagelevelofficialsen from './en-US/Villagelevelofficialsen';
+import gramAdarshTakta from './en-US/gramAdarshTakta';
 
 export default {
   'navBar.lang': 'Languages',
@@ -110,5 +112,6 @@ export default {
   ...OneTimeDataEntryReport,
   ...EducationalCess,
   ...RojgarlaguRojgarHami,
-  ...Villagelevelofficials,
+  ...Villagelevelofficialsen,
+  ...gramAdarshTakta
 };

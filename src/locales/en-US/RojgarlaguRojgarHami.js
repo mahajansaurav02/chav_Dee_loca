@@ -12,16 +12,21 @@ export default {
   'RojgarlaguRojgarHami.form.challanDate': ' Challan Date',
   'RojgarlaguRojgarHami.form.remarks': 'Remarks ',
   'RojgarlaguRojgarHami.form.khataNo': 'Khata No ',
-
+'RojgarlaguRojgarHami.form.serialNo':'Sr.No.',
+'RojgarlaguRojgarHami.form.gatNumber':"Survey hissa",
   'RojgarlaguRojgarHami.form.khatedarName': 'Khatedar Name',
   'RojgarlaguRojgarHami.form.RojgarlaguRojgarHami': 'Education Cess Report',
   'RojgarlaguRojgarHami.form.RojgarlaguRojgarHaminame':
     'Register of Annual Ledger of Demand and Recoveries and Trail Balance Sheet of items other then Land Revenue(e.g. Irrigation Dues,Hissa Survey Fees,Sales Tax,Income Tax,etc.)',
-  'RojgarlaguRojgarHami.form.departmentNm': 'Name of Department- Income Tex Department',
+  'RojgarlaguRojgarHami.form.departmentNm': 'Name of Department- Income Tax Department',
   'RojgarlaguRojgarHami.form.amountofrecovery': 'Amount for Recovery:',
   'RojgarlaguRojgarHami.form.otherLandRevenue': 'Other than Land Revenue',
   'RojgarlaguRojgarHami.form.jameenMahsul': 'Land Revenue',
   'villageForm8B8c.form.jameenMahsul': 'Village form 8B & 8C',
+  'RojgarlaguRojgarHami.form.hangam':'Season',
+  'RojgarlaguRojgarHami.form.Areaunderirrigation':'Area Under Irrigation',
+  'RojgarlaguRojgarHami.form.minusAreaunderirrigation':'Area Under Irrigation(Minus)',
+  'RojgarlaguRojgarHami.form.totalapplicable':'Total Applicable Cess',
   // 'villageForm8B8c.form.AkunemagnipaykizaleliWasuli': 'Total Magni payki  Zaleli Vasuli',
   'villageForm8B8c.form.AkunemagnipaykizaleliWasuli': 'Total Village Demand',
   // 'villageForm8B8c.form.YakunWasuli': 'Total Vasuli',----29 DEC 24

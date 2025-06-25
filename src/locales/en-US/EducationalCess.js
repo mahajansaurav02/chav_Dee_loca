@@ -24,6 +24,16 @@ export default {
   'EducationalCess.form.otherLandRevenue': 'Other than Land Revenue',
   'EducationalCess.form.jameenMahsul': 'Land Revenue',
   'villageForm8B8c.form.jameenMahsul': 'Village form 8B & 8C',
+  'formLanguage.form.serialNo': 'Sr.No.',
+  'EducationalCess.form.gatNumber': 'Survey Hissa no.',
+  'EducationalCess.form.hangam': 'Season',
+  'EducationalCess.form.cropName': 'Crop Name',
+  'EducationalCess.form.area': 'Area',
+  'EducationalCess.form.hectorCal': 'Assesment',
+  'EducationalCess.form.applicableEducationalTax': 'Education Cess',
+  'EducationalCess.form.totalapplicableEducationalTax': 'Applied Education Cess',
+  'EducationalCess.form.increseadEducationalTax': 'Additional Education Cess',
+  
   // 'villageForm8B8c.form.AkunemagnipaykizaleliWasuli': 'Total Magni payki  Zaleli Vasuli',
   'villageForm8B8c.form.AkunemagnipaykizaleliWasuli': 'Total Village Demand',
   // 'villageForm8B8c.form.YakunWasuli': 'Total Vasuli',----29 DEC 24

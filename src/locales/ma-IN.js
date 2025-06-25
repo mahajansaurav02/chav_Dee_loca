@@ -52,6 +52,7 @@ import villageReport5 from './ma-IN/villageReport5';
 import form9b from './en-US/form9b';
 import loginpage from './ma-IN/loginpage';
 import OneTimeDataEntryReport from './ma-IN/OneTimeDataEntryReport';
+import gramAdarshTakta from './ma-IN/gramAdarshTakta';
 export default {
   'navBar.lang': 'Languages',
   'layout.user.link.help': 'Help',
@@ -112,4 +113,5 @@ export default {
   ...EducationalCess,
   ...RojgarlaguRojgarHami,
   ...Villagelevelofficials,
+  ...gramAdarshTakta
 };

@@ -46,7 +46,7 @@ const BasicForm = () => {
   const [loading, setLoading] = useState(false);
   const [part, setPart] = useState(null);
   const [prayojan, setPrayojan] = useState(null);
-
+  const [outsideGavthanRate,setOutsideGavthanRate]=useState()
   useEffect(() => {
     if (codeVillage) {
       getKaJaPaRate();
@@ -54,68 +54,150 @@ const BasicForm = () => {
   }, [codeVillage]);
 
   useEffect(() => {
+    console.log(outsideGavthanRate,'outsideGavthanRate---------11111111111111111111')
+    if(part=='form2.table.partB' && outsideGavthanRate){
+      
+      console.log(outsideGavthanRate,'outsideGavthanRate---------222222222222222222222')
+    
     if (prayojan == 'निवासी') {
       form.setFieldsValue({
-        amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1).toFixed(2),
-        amountOfGp: (part == 'form2.table.partA'
-          ? 0
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1
-        ).toFixed(2),
-        amountOfZp: (
-          (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 1) * 7
-        ).toFixed(2),
-        assessment: (part == 'form2.table.partA'
-          ? kaJaPaRate * (affectedAreaValue * h2R) * 1
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1 * 9
-        ).toFixed(2),
+        amountOfJm: Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1).toFixed(2),
       });
+ 
       // console.log('निवासी', rate * affectedAreaValue * h2R);
-    } else if (prayojan == 'औद्योगिक') {
+    }
+    
+    
+    
+    
+    
+    
+    
+    else if (prayojan == 'औद्योगिक') {
+      // form.setFieldsValue({
+      //   amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+      //   amountOfZp: (
+      //     (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 1.5) * 7
+      //   ).toFixed(2),
+      //   amountOfGp: (part == 'form2.table.partA'
+      //     ? 0
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 1.5
+      //   ).toFixed(2),
+      //   assessment: (part == 'form2.table.partA'
+      //     ? kaJaPaRate * (affectedAreaValue * h2R) * 1.5
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 1.5 * 9
+      //   ).toFixed(2),
+      // });
       form.setFieldsValue({
-        amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
-        amountOfZp: (
-          (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 1.5) * 7
-        ).toFixed(2),
-        amountOfGp: (part == 'form2.table.partA'
-          ? 0
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1.5
-        ).toFixed(2),
-        assessment: (part == 'form2.table.partA'
-          ? kaJaPaRate * (affectedAreaValue * h2R) * 1.5
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1.5 * 9
-        ).toFixed(2),
+        amountOfJm: Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
       });
     } else if (prayojan == 'वाणिज्य') {
+      // form.setFieldsValue({
+      //   amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 2).toFixed(2),
+      //   amountOfZp: (
+      //     (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 2) * 7
+      //   ).toFixed(2),
+      //   amountOfGp: (part == 'form2.table.partA'
+      //     ? 0
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 2
+      //   ).toFixed(2),
+      //   assessment: (part == 'form2.table.partA'
+      //     ? kaJaPaRate * (affectedAreaValue * h2R) * 2
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 2 * 9
+      //   ).toFixed(2),
+      // });
       form.setFieldsValue({
-        amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 2).toFixed(2),
-        amountOfZp: (
-          (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 2) * 7
-        ).toFixed(2),
-        amountOfGp: (part == 'form2.table.partA'
-          ? 0
-          : kaJaPaRate * (affectedAreaValue * h2R) * 2
-        ).toFixed(2),
-        assessment: (part == 'form2.table.partA'
-          ? kaJaPaRate * (affectedAreaValue * h2R) * 2
-          : kaJaPaRate * (affectedAreaValue * h2R) * 2 * 9
-        ).toFixed(2),
+        amountOfJm: Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 2).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 2).toFixed(2),
       });
     } else if (prayojan == 'इतर') {
+      // 
       form.setFieldsValue({
-        amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
-        amountOfZp: (
-          (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 1.5) * 7
-        ).toFixed(2),
-        amountOfGp: (part == 'form2.table.partA'
-          ? 0
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1.5
-        ).toFixed(2),
-        assessment: (part == 'form2.table.partA'
-          ? kaJaPaRate * (affectedAreaValue * h2R) * 1.5
-          : kaJaPaRate * (affectedAreaValue * h2R) * 1.5 * 9
-        ).toFixed(2),
+        amountOfJm: Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(outsideGavthanRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
       });
     }
+  }else{
+
+    if (prayojan == 'निवासी') {
+      form.setFieldsValue({
+        amountOfJm: Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 1).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment: Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 1).toFixed(2),
+      });
+ 
+      // console.log('निवासी', rate * affectedAreaValue * h2R);
+    }
+    
+    
+    
+    
+    
+    
+    
+    else if (prayojan == 'औद्योगिक') {
+      // form.setFieldsValue({
+      //   amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+      //   amountOfZp: (
+      //     (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 1.5) * 7
+      //   ).toFixed(2),
+      //   amountOfGp: (part == 'form2.table.partA'
+      //     ? 0
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 1.5
+      //   ).toFixed(2),
+      //   assessment: (part == 'form2.table.partA'
+      //     ? kaJaPaRate * (affectedAreaValue * h2R) * 1.5
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 1.5 * 9
+      //   ).toFixed(2),
+      // });
+      form.setFieldsValue({
+        amountOfJm: Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+      });
+    } else if (prayojan == 'वाणिज्य') {
+      // form.setFieldsValue({
+      //   amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 2).toFixed(2),
+      //   amountOfZp: (
+      //     (part == 'form2.table.partA' ? 0 : kaJaPaRate * (affectedAreaValue * h2R) * 2) * 7
+      //   ).toFixed(2),
+      //   amountOfGp: (part == 'form2.table.partA'
+      //     ? 0
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 2
+      //   ).toFixed(2),
+      //   assessment: (part == 'form2.table.partA'
+      //     ? kaJaPaRate * (affectedAreaValue * h2R) * 2
+      //     : kaJaPaRate * (affectedAreaValue * h2R) * 2 * 9
+      //   ).toFixed(2),
+      // });
+      form.setFieldsValue({
+        amountOfJm: Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 2).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  Math.round(kaJaPaRate * (affectedAreaValue * h2R) * 2).toFixed(2),
+      });
+    } else if (prayojan == 'इतर') {
+      // 
+      form.setFieldsValue({
+        amountOfJm: (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+        amountOfGp: 0,
+        amountOfZp:0,
+        assessment:  (kaJaPaRate * (affectedAreaValue * h2R) * 1.5).toFixed(2),
+      });
+    }
+  }
   }, [prayojan, part, affectedAreaValue]);
 
   useEffect(() => {
@@ -300,8 +382,28 @@ const BasicForm = () => {
     );
   };
 
+
+
+  const getnapamanaparate= async(value)=>{
+    setOutsideGavthanRate(0)
+
+    // console.log(surveyHissaNumberValue,"surveyhissanoi")
+sendRequest(
+  `${URLS.BaseURL}/form17NoKaJaPa/getrate?cCode=${codeVillage}&pin=${value}`,
+  'GET',
+  null,
+  (res)=>{
+    setOutsideGavthanRate(res.data.rate)
+    console.log(rate,"check rateeee")
+    console.log(res.data.rate,"checkreponse")
+
+  }
+)
+  }
+
+
   const onFinish = async (values) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const inputParamsForAdd = {
       revenueYear: revenueYear,
       districtCode: districtCode,
@@ -324,6 +426,16 @@ const BasicForm = () => {
       remarks: form.getFieldValue('remarks'),
       kaJaPaRate: kaJaPaRate,
     };
+
+    if(!inputParamsForAdd.orderNo){
+      return console.log("orderNo is required ")
+    }
+    if(!inputParamsForAdd.areaAffected){
+      return console.log("areaAffected area is required ")
+    }
+    setIsLoading(true);
+
+
 
     const inputParamsForEdit = {
       id: location.state?.id,
@@ -578,6 +690,7 @@ const BasicForm = () => {
                     value={surveyHissaNoValue}
                     onSelect={(value) => {
                       getTotalAreaAndUom(value);
+                      getnapamanaparate(value);
                     }}
                     placeholder="Select Survey Number"
                   />
@@ -613,12 +726,15 @@ const BasicForm = () => {
             <Col xl={7} lg={7} md={7} sm={24} xs={24}>
               <Form.Item
                 label={'बिनशेती आदेश क्रमांक'}
+                required
                 name="orderNo"
                 rules={[
                   {
                     max: 50,
                     message: 'Please Enter Case Number upto 50 characters',
                   },
+                  { required: true, message: 'This Field Is Required..' }
+
                 ]}
               >
                 <Input
@@ -632,12 +748,15 @@ const BasicForm = () => {
             <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
 
             <Col xl={7} lg={7} md={7} sm={24} xs={24}>
-              <Form.Item style={{ marginLeft: 5 }} label={'बिनशेती क्षेत्र '} name="areaAffected">
-                <Input.Group compact>
+            <Form.Item style={{ marginLeft: 5 }} label={'बिनशेती क्षेत्र '} 
+               required 
+                  name="areaAffected"
+                  >                <Input.Group compact>
                   <Input
                     disabled={location.state?.pageMode === 'View'}
                     style={{ width: '60%' }}
                     value={affectedAreaValue}
+                    required
                     onChange={(event) => {
                       setAffectedAreaValue(event.target.value);
                     }}
@@ -718,18 +837,18 @@ const BasicForm = () => {
               <Form.Item
                 label={<FormattedMessage id="villageForm17.table.amountOfLC" />}
                 name="amountOfZp"
-                rules={[
-                  // {
-                  //   required: true,
-                  //   message: 'Please Enter Amount Of L.C',
-                  // },
-                  {
-                    max: 50,
-                    message: 'This Field shoud be upto 50 Numericals',
-                  },
-                ]}
+                // rules={[
+                //   // {
+                //   //   required: true,
+                //   //   message: 'Please Enter Amount Of L.C',
+                //   // },
+                //   {
+                //     max: 50,
+                //     message: 'This Field shoud be upto 50 Numericals',
+                //   },
+                // ]}
               >
-                <Input maxLength={51} disabled />
+                <Input  disabled />
               </Form.Item>
             </Col>
 
@@ -739,14 +858,14 @@ const BasicForm = () => {
               <Form.Item
                 label={<FormattedMessage id="villageForm17.table.amountOfVP" />}
                 name="amountOfGp"
-                rules={[
-                  {
-                    max: 50,
-                    message: 'This Field shoud be upto 50 Numericals',
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     max: 50,
+                //     message: 'This Field shoud be upto 50 Numericals',
+                //   },
+                // ]}
               >
-                <Input maxLength={51} disabled />
+                <Input  disabled />
               </Form.Item>
             </Col>
           </Row>

@@ -83,7 +83,7 @@ class DetailForm extends React.Component {
             <Select.Option value="flow-smooth">Smooth</Select.Option>
             <Select.Option value="flow-polyline">Polyline</Select.Option>
             <Select.Option value="flow-polyline-round">Polyline Round</Select.Option>
-          </Select.Option>
+          </Select>
         </Item>
       </Form>
     );

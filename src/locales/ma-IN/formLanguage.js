@@ -26,7 +26,7 @@ export default {
   'formLanguage.form.hissaNo': 'हिस्सा क्रमांक',
   'formLanguage.button.getFerfar': 'शोधा',
   'formLanguage.form.eFerfar': 'ई-फेरफार मधील माहिती',
-  'formLanguage.form.echawdi': 'ई-चावडी',
+  'formLanguage.form.echawdi': 'इ-चावडी',
   'formLanguage.form.assessment': 'आकारणी',
   'formLanguage.form.rupees': '₹',
   'formLanguage.button.khataNo': 'खाता क्रमांक',

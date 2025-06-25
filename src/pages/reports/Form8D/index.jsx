@@ -317,9 +317,28 @@ class ComponentToPrint extends React.Component {
                       <td>{'ज.म'}</td>
 
                       <td>
-                        {r.challanNo} <br /> {r.challanNo0045}
-                      </td>
-
+                    {r.modeOfPayment === 'Online' && (r.grasStatus0029 === 'DEFACED' || r.grasStatus0045 === 'DEFACED') ? (
+                      <>
+                      {r.grasStatus0029 === 'DEFACED' && (
+                        <>
+                        <a href={`${URLS.AuthURL}/viewChallan?grnNo=${r.bankReceiptNumber}`} target="_blank" rel="noopener noreferrer">{r.bankReceiptNumber}</a>
+                      </>
+                      )}
+                      {r.grasStatus0045 === 'DEFACED' && (
+                        <>
+                        <br />
+                        <a href={`${URLS.AuthURL}/viewChallan?grnNo=${r.bankReceiptNumber0045}`} target="_blank" rel="noopener noreferrer">{r.bankReceiptNumber0045}</a>
+                      </>
+                      )}
+                      </>
+                    ) : (
+                      <>
+                        {r.challanNo}
+                        <br />
+                        {r.challanNo0045}
+                      </>
+                    )}
+                  </td>
                       <td>{r.challanAmount}</td>
                     </tr>
                   ))}

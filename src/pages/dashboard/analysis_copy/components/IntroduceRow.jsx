@@ -1949,7 +1949,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                       style={{ backgroundColor: '#002884', color: '#F0F2F5' }}
                     >
                       {/* विभाग/जिल्हा नाव */}
-                      विभाग/जिल्हा
+                      विभाग/जिल्हा/तालुका 
                       {/* मंडळ */}
                     </Typography>
 
@@ -1957,7 +1957,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                   </Box>
                 </Card>
               </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box>
                     <Typography
@@ -1966,14 +1966,14 @@ export const IntroduceRow = ({ loading, visitData }) => {
                       align="center"
                       style={{ backgroundColor: '#002884', color: '#F0F2F5' }}
                     >
-                      जिल्ह्यांची संख्या
+                      जिल्ह्यांची 
                     </Typography>
 
                     <Divider variant="middle" />
                   </Box>
                 </Card>
-              </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              </Grid> */}
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box>
                     <Typography
@@ -1988,8 +1988,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     <Divider variant="middle" />
                   </Box>
                 </Card>
-              </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              </Grid> */}
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box>
                     <Typography
@@ -2020,7 +2020,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     <Divider variant="middle" />
                   </Box>
                 </Card>
-              </Grid>
+              </Grid> */}
               <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box>
@@ -2030,8 +2030,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                       align="center"
                       style={{ backgroundColor: '#002884', color: '#F0F2F5' }}
                     >
-                      एकूण गावांची संख्या
-                    </Typography>
+                    अर्ज प्राप्त गाव संख्या                     </Typography>
 
                     <Divider variant="middle" />
                   </Box>
@@ -2049,7 +2048,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                       {/* एकूण खातेदारांची संख्या */}
                       {/* ग. न . भरलेली माहिती */}
                       {/* डी.वाय.असं.आलं.आर यांनी आकारबंद भरण्यासाठी कामकाज सुरु केलेल्या गावांची संख्या */}
-                      मंजुरकेलेले अरजांची संख्या
+                      मंजुरकेलेले अर्जांची संख्या
                     </Typography>
 
                     <Divider variant="middle" />
@@ -2067,7 +2066,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     >
                       {/* भाग - १ मधील गावांची संख्या */}
                       {/* 100 % मागणी निश्चिती केलेले गांव संख्या */}
-                      नाकारलेले अरजांची संख्या
+                      नाकारलेले अर्जांची संख्या
                     </Typography>
 
                     <Divider variant="middle" />
@@ -2085,7 +2084,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     >
                       {/* भाग - १ मधील गावांची संख्या */}
                       {/* 100 % मागणी निश्चिती केलेले गांव संख्या */}
-                      प्रलंबित अरजांची संख्या
+                      प्रलंबित अर्जांची संख्या
                     </Typography>
 
                     <Divider variant="middle" />
@@ -2103,7 +2102,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     >
                       {/* भाग - १ मधील गावांची संख्या */}
                       {/* 100 % मागणी निश्चिती केलेले गांव संख्या */}
-                      एकूण अरजांची संख्या
+                      एकूण अर्जांची संख्या
                     </Typography>
 
                     <Divider variant="middle" />
@@ -2169,7 +2168,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                         </Card>
                       </Grid>
                       {/* )} */}
-                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                         <Card>
                           <Box
                             sx={{
@@ -2184,8 +2183,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                             </CardContent>
                           </Box>
                         </Card>
-                      </Grid>
-                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                      </Grid> */}
+                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                         <Card>
                           <Box
                             sx={{
@@ -2200,8 +2199,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                             </CardContent>
                           </Box>
                         </Card>
-                      </Grid>
-                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                      </Grid> */}
+                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                         <Card>
                           <Box
                             sx={{
@@ -2216,43 +2215,9 @@ export const IntroduceRow = ({ loading, visitData }) => {
                             </CardContent>
                           </Box>
                         </Card>
-                      </Grid>
-                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
-                        <Card>
-                          <Box
-                            sx={{
-                              bgcolor: '#91ceff',
-                              height: 50,
-                            }}
-                          >
-                            {/* <CardContent>
-                              <center>
-                                <h3>{r.totalDyslrWorkCount}</h3>
-                              </center>
-                            </CardContent> */}
-                            <CardContent>
-                              <center>
-                                {/* <a
-                                  onClick={() => {
-                                    redirectToSub_Superintendent_Bhumi_Abhilek(
-                                      r.districtName,
-                                      r.districtCode,
-                                      r.totalOnlineVillagesCount,
-                                      r.talukaCode,
-                                      selectedYear,
-                                    );
-                                  }}
-                                > */}
-                                <h3>
-                                  {/* <u> {r.totalDyslrWorkCount}</u> */}
-                                  {r.totalDyslrWorkCount}
-                                </h3>
-                                {/* </a> */}
-                              </center>
-                            </CardContent>
-                          </Box>
-                        </Card>
-                      </Grid>
+                      </Grid> */}
+                
+                      
                       <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                         <Card>
                           <Box
@@ -2408,7 +2373,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                   </Box>
                                 </Card>
                               </Grid>
-                              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                 <Card>
                                   <Box
                                     sx={{
@@ -2423,8 +2388,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                     </CardContent>
                                   </Box>
                                 </Card>
-                              </Grid>
-                              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                              </Grid> */}
+                              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                 <Card>
                                   <Box
                                     sx={{
@@ -2439,8 +2404,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                     </CardContent>
                                   </Box>
                                 </Card>
-                              </Grid>
-                              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                              </Grid> */}
+                              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                 <Card>
                                   <Box
                                     sx={{
@@ -2471,7 +2436,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                     </CardContent>
                                   </Box>
                                 </Card>
-                              </Grid>
+                              </Grid> */}
                               <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                 <Card>
                                   <Box
@@ -2656,7 +2621,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                           </Box>
                                         </Card>
                                       </Grid>
-                                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                         <Card>
                                           <Box
                                             sx={{
@@ -2666,14 +2631,13 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                           >
                                             <CardContent>
                                               <center>
-                                                {/* <h3>{r.districtsCount}</h3> */}
                                                 <h3>0</h3>
                                               </center>
                                             </CardContent>
                                           </Box>
                                         </Card>
-                                      </Grid>
-                                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                                      </Grid> */}
+                                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                         <Card>
                                           <Box
                                             sx={{
@@ -2683,15 +2647,14 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                           >
                                             <CardContent>
                                               <center>
-                                                {/* <h3>{r.totalTaluka}</h3>
-                                                 */}
+                                              
                                                 <h3>1</h3>
                                               </center>
                                             </CardContent>
                                           </Box>
                                         </Card>
-                                      </Grid>
-                                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                                      </Grid> */}
+                                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                         <Card>
                                           <Box
                                             sx={{
@@ -2707,8 +2670,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                             </CardContent>
                                           </Box>
                                         </Card>
-                                      </Grid>
-                                      <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                                      </Grid> */}
+                                      {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                         <Card>
                                           <Box
                                             sx={{
@@ -2718,32 +2681,19 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                           >
                                             <CardContent>
                                               <center>
-                                                {/* <h3>{r.totalDyslrWorkCountForTaluka}</h3> */}
-
-                                                {/* <a
-                                                  onClick={() => {
-                                                    redirectToSub_Superintendent_Bhumi_Abhilek(
-                                                      r.districtName,
-                                                      r.districtCode,
-                                                      r.totalOnlineVillagesCount,
-                                                      r.talukaCode,
-                                                      selectedYear,
-                                                    );
-                                                  }}
-                                                > */}
+                                                
                                                 <h3>
-                                                  {/* <u> */}{' '}
+                                                 {' '}
                                                   {r.totalDyslrWorkCount == 'null'
                                                     ? '0'
                                                     : r.totalDyslrWorkCount}
-                                                  {/* </u> */}
+                                                 
                                                 </h3>
-                                                {/* </a> */}
                                               </center>
                                             </CardContent>
                                           </Box>
                                         </Card>
-                                      </Grid>
+                                      </Grid> */}
                                       <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                                         <Card>
                                           <Box
@@ -2899,7 +2849,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                               </Box>
                             </Card>
                           </Grid>
-                          <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                          {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                             <Card>
                               <Box
                                 sx={{
@@ -2930,8 +2880,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                 </CardContent>
                               </Box>
                             </Card>
-                          </Grid>
-                          <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                          </Grid> */}
+                          {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                             <Card>
                               <Box
                                 sx={{
@@ -2946,24 +2896,25 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                 </CardContent>
                               </Box>
                             </Card>
-                          </Grid>
-                          <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
-                            <Card>
-                              <Box
-                                sx={{
-                                  bgcolor: '#cce8ff',
-                                  height: 50,
-                                }}
-                              >
-                                <CardContent>
-                                  <center>
-                                    {/* <h3> {dashBoardCount1Tab4?.totalDyslrWorkCount}</h3> */}
-                                    <h3> {dashBoardCount1Tab4?.totalDyslrWorkCountTTI}</h3>
-                                  </center>
-                                </CardContent>
-                              </Box>
-                            </Card>
-                          </Grid>
+                          </Grid> */}
+
+                          
+                              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+                                <Card>
+                                  <Box
+                                    sx={{
+                                      bgcolor: '#cce8ff',
+                                      height: 50,
+                                    }}
+                                          >
+                                    <CardContent>
+                                      <center>
+                                        <h3> {dashBoardCount1Tab4?.totalDyslrWorkCountTTI}</h3>
+                                      </center>
+                                    </CardContent>
+                                  </Box>
+                                </Card>
+                              </Grid> */}
 
                           <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                             <Card>
@@ -3095,7 +3046,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                   </Box>
                 </Card>
               </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box
                     sx={{
@@ -3110,8 +3061,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     </CardContent>
                   </Box>
                 </Card>
-              </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              </Grid> */}
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box
                     sx={{
@@ -3126,8 +3077,8 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     </CardContent>
                   </Box>
                 </Card>
-              </Grid>
-              <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
+              </Grid> */}
+              {/* <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>
                   <Box
                     sx={{
@@ -3158,7 +3109,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                     </CardContent>
                   </Box>
                 </Card>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={24} sm={24} md={24} lg={2} xl={2}>
                 <Card>

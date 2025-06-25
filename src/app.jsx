@@ -556,6 +556,12 @@ export const layout = ({ initialState }) => {
             path: '/form/Village-level-officials-form/table-form',
             component: './form/Village-level-officials-form/table-form',
           },
+          {
+            name: 'Village Gram Adarsh Takta',
+            icon: 'smile',
+            path: '/form/gram-adarsh-takta/village-form',
+            component: './form/gram-adarsh-takta/village-form',
+          },
 
           {
             name: 'Target',
@@ -840,6 +846,12 @@ export const layout = ({ initialState }) => {
             icon: 'smile',
             path: '/reports/Form15',
             component: './reports/Form15',
+          },
+          {
+            name: 'Gram Adarsh Takta',
+            icon: 'smile',
+            path: '/reports/Gram-Adarsh-Chart',
+            component: './reports/Gram-Adarsh-Chart',
           },
           {
             name: 'Form 17',
@@ -1388,6 +1400,7 @@ export const layout = ({ initialState }) => {
           },
         ],
       },
+     
       {
         path: '/all-villages',
         redirect: '/reports/All-Village-Report',

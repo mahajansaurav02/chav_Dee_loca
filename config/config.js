@@ -740,6 +740,12 @@ export default defineConfig({
           path: '/form/Village-level-officials-form/table-form',
           component: './form/Village-level-officials-form/table-form',
         },
+        {
+          name: 'Village Gram Adarsh Takta',
+          icon: 'smile',
+          path: '/form/gram-adarsh-takta/village-form',
+          component: './form/gram-adarsh-takta/village-form',
+        },
 
         {
           name: 'Target',
@@ -1080,6 +1086,12 @@ export default defineConfig({
           component: './reports/Form15',
         },
         {
+          name: 'Gram Adarsh Takta',
+          icon: 'smile',
+          path: '/reports/Gram-Adarsh-Chart',
+          component: './reports/Gram-Adarsh-Chart',
+        },
+        {
           name: 'Form 17',
           icon: 'smile',
           path: '/reports/village-form-17',
@@ -1258,6 +1270,13 @@ export default defineConfig({
           icon: 'smile',
           path: '/dashboard/analysis_copy',
           component: './dashboard/analysis_copy',
+        },
+        {
+          name: 'Mis',
+          icon: 'smile',
+          path: '/dashboard/collectorMis',
+          component: './dashboard/collectorMis',
+          layout: false,
         },
 
         // {

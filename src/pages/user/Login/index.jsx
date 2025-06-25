@@ -1,4 +1,4 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 import { Alert, Button, Col, Form, Input, message, Modal, Row, Select, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -87,7 +87,7 @@ const Login = () => {
       servarthId: username,
       password: encrypted.toString(),
     };
-
+ 
     let loginStatus;
     await Axios.post(`${URLS.AuthURL}/authenticateUserByUsernameAndPassword`, article)
       .then((res) => {
@@ -151,6 +151,7 @@ const Login = () => {
           defaultMessage: 'Login Successful',
         });
         let ROLES = JSON.parse(localStorage.getItem('roles'));
+        console.log(ROLES[0], '---------ROLES');
         // let ROLES = 'ROLE_TEHSILDAR';
         // console.log(ROLES, '---------ROLES');
 
@@ -171,7 +172,10 @@ const Login = () => {
           // else if (ROLES === 'ROLE_TEHSILDAR') {
           //alert('TEHSILDAR');
           history.push(redirect || '/dashboard/analysis_copy');
-        } else {
+        } else if( ROLES[0] === 'ROLE_SDO'|| ROLES[0] === 'ROLE_COLLECTOR' || ROLES[0] === 'ROLE_DEPUTY_COLLECTOR' || ROLES[0] === 'ROLE_ACOL' || ROLES[0] === 'ROLE_CIRCLE_OFFICER' || ROLES[0] === 'ROLE_TAHSILDAR' || ROLES[0] === 'ROLE_NTAH') {
+  window.location.href = redirect || 'http://localhost:9091/#/dashboard';
+        }
+        else {
           // history.push(redirect || '/homepage');
           history.push(redirect || '/homepageThalati');
         }
@@ -181,7 +185,7 @@ const Login = () => {
           id: 'pages.login.failure',
           defaultMessage: 'Login failed, please try again!',
         });
-        message.error(defaultLoginFailureMessage);
+        message.error(defaultLoginFailureMessage);  
       }
       // console.log(msg); //If it fails to set user error message
 
@@ -285,6 +289,10 @@ const Login = () => {
   //     alert('Captcha Does Not Match');
   //   }
   // };
+ const handleClick = () => {
+    history.push('/dashboard/collectorMis');
+  };
+
 
   return (
     <div className="loginscreen">
@@ -295,7 +303,7 @@ const Login = () => {
           <h3 style={{ color: 'blueviolet' }}>
             {/*  मागणी निश्चिती केल्यावर पण काही दुरुस्ती बाकी असल्यास खातेदारांची मागणी दुरुस्तीची
             सुविधा देण्यात आलेली आहे. */}
-            गाव नमुना निरंक आणि गाव नमुना कामकाज पूर्ण निवडण्याचा पर्याय सुविधा देण्यात आली आहे.
+            गाव नमुना निरंक आणि गाव नमुना कामकाज पूर्ण निवडण्याचा पर्याय सुविधा देण्यात आली आहे. ई-चावडी मधील MIS बघण्यासाठी User id/pw ची आवश्यकता नाही. ई चावडी MIS बघण्यासाठी वरील  लिंकवर क्लिक करा.
           </h3>
         </marquee>
 
@@ -312,9 +320,22 @@ const Login = () => {
       </div>
 
       <div className="rightSide">
-        <div className="translator" data-lang>
-          {SelectLang && <SelectLang className="trans" />}
-        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+   <Button
+  type="primary"
+  className="go-to-mis-button"
+  onClick={handleClick}
+>
+  <ArrowRightOutlined style={{ marginRight: '8px', fontSize: '16px' }} />
+  <FormattedMessage id="login.gotoMis" />
+  <img src="/new.gif" alt="New" className="new-gif" />
+</Button>
+
+
+    <div className="translator" data-lang>
+      {SelectLang && <SelectLang className="trans" />}
+    </div>
+  </div>
         <div className="loginForm" id="loginForm1">
           {/* <img className="firstAugustImage" src={FirstAugustTitle} /> */}
           <h1>

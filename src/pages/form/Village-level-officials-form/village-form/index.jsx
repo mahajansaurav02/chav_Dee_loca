@@ -20,6 +20,7 @@ import URLS from '@/URLs/urls';
 import moment from 'moment';
 import useAxios from '@/components/eComponents/use-axios';
 import KeyPressEvents from '@/util/KeyPressEvents';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 function VillageForm19() {
   const { sendRequest } = useAxios();
@@ -35,6 +36,8 @@ function VillageForm19() {
   const { servarthId, districtCode, talukaCode, districtName, talukaName, desig, villageData } =
     useModel('details');
   const [isLoading, setIsLoading] = useState(false);
+  const [sahayyaks, setSahayyaks] = useState([{ name: '', mobile: '', email: '' }]);
+  const [sarkariSansthaO, setSarkariSansthaO] = useState([{ name: '', mobile: '', email: '' }]);
 
   let history = useHistory();
 
@@ -64,9 +67,9 @@ function VillageForm19() {
     // console.log('Name of Village ==>>', event.label, 'cCode==>>', value);
   };
 
-  const success = () => {
-    message.success('Data Saved !!!');
-  };
+  // const success = () => {
+  //   message.success('Data Saved !!!');
+  // };
 
   const resetForm = () => {
     form.resetFields();
@@ -78,96 +81,134 @@ function VillageForm19() {
     });
   };
 
+  const handleAddSahayyak = () => {
+    if (sahayyaks.length < 4) {
+      setSahayyaks([...sahayyaks, { name: '', mobile: '', email: '' }]);
+    }
+  };
+
+  const handleRemoveSahayyak = (index) => {
+    const updated = [...sahayyaks];
+    updated.splice(index, 1);
+    setSahayyaks(updated);
+  };
+
+  const handleChangeSahayyak = (index, field, value) => {
+    const updated = [...sahayyaks];
+    updated[index][field] = value;
+    setSahayyaks(updated);
+  };
+
+  // function sendRequest(url, method, data, onSuccess, onError) {
+  //   fetch(url, {
+  //     method: method,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then(async (response) => {
+  //       const resData = await response.json();
+  //       if (!response.ok) {
+  //         throw new Error(resData.message || 'Something went wrong');
+  //       }
+  //       onSuccess(resData);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Request failed:', error);
+  //       onError(error);
+  //     });
+  // }
+
   const onFormFinish = async (values) => {
     setIsLoading(true);
-   
+
     // "districName":"रायगड",
     // "talukaName":"तळा ",
     // "villageName":"रोवले",
     // "revenueYear":"2024-25",
-    const article ={
+    const article = {
       cCode: cCode,
       districtCode: districtCode,
       talukaCode: talukaCode,
-      districName:districtName,
-      talukaName:talukaName,
-      villageName:village,
-      revenueYear:"2024-25"  ,
+      districName: districtName,
+      talukaName: talukaName,
+      villageName: village,
+      revenueYear: '2024-25',
 
-
-      officerDetails:[
-        {        
-         
+      officerDetails: [
+        {
           name: form.getFieldValue('sarpanch'),
           mobileNumber: form.getFieldValue('sarpanchMobile'),
           email: form.getFieldValue('sarpanchEmail'),
-          designationName: "सरपंच"
+          designationName: 'सरपंच',
         },
         {
-        
           name: form.getFieldValue('police'),
           mobileNumber: form.getFieldValue('policeMobile'),
           email: form.getFieldValue('policeEmail'),
-          designationName: "पोलीस पाटील"
+          designationName: 'पोलीस पाटील',
         },
         {
-        
           name: form.getFieldValue('gramsewak'),
           mobileNumber: form.getFieldValue('gramsewakMobile'),
           email: form.getFieldValue('gramsewakEmail'),
-          designationName: "ग्राम सेवक"
+          designationName: 'ग्राम सेवक',
         },
         {
-          
           name: form.getFieldValue('mahsulsewak'),
           mobileNumber: form.getFieldValue('mahsulsewakMobile'),
           email: form.getFieldValue('mahsulsewakEmail'),
-          designationName: "महसुलसेवक "
+          designationName: 'महसुलसेवक ',
         },
         {
           // कृषीसहाय्यक
           name: form.getFieldValue('krushiSahyak'),
           mobileNumber: form.getFieldValue('krushiSahyakMobile'),
           email: form.getFieldValue('krushiSahyakEmail'),
-          designationName: "कृषीसहाय्यक"
+          designationName: 'कृषीसहाय्यक',
         },
         {
-          
           name: form.getFieldValue('patishtit1'),
           mobileNumber: form.getFieldValue('patishtit1Mobile'),
           email: form.getFieldValue('patishtit1Email'),
-          designationName: "प्रतिष्ठित व्यक्ति १"
+          designationName: 'प्रतिष्ठित व्यक्ति १',
         },
         {
-          
           name: form.getFieldValue('patishtit2'),
           mobileNumber: form.getFieldValue('patishtit2Mobile'),
           email: form.getFieldValue('patishtit2Email'),
-          designationName: "प्रतिष्ठित व्यक्ति २"
+          designationName: 'प्रतिष्ठित व्यक्ति २',
         },
-      ]
-    } ;
+      ],
+    };
 
     console.log(article, '-----------------------------------article');
+    setIsLoading(true);
+
     sendRequest(
       `${URLS.BaseURL}/villageDetails/saveDetails`,
       'POST',
       article,
       (res) => {
-         if (res.status == 'SUCCESS') {
-        //if (true) {
-          console.log(res, '-----------------------------------article');
+        console.log(res, '✅ Response received');
 
-          success();
-          message.success("Data Saved!")
-          // form.resetFields();
-          // history.push({
-          //   pathname: `/form/village-form-19/table-form`,
-          // });
-          setIsLoading(false);
+        if (res.status === 201) {
+          console.log(res, '✅ Article saved successfully');
+
+          // success(); // your custom success function
+          message.success('Data Saved!');
+          resetForm();
+        } else {
+          console.warn('⚠️ Response received but status is not SUCCESS', res);
+          message.error('Failed to save data');
         }
+
+        setIsLoading(false);
       },
       (err) => {
+        console.error('❌ Error occurred while saving data:', err);
+        message.error('An error occurred while saving');
         setIsLoading(false);
       },
     );
@@ -324,7 +365,7 @@ function VillageForm19() {
                   },
                 ]}
               >
-                <Input onKeyPress={KeyPressEvents.isEmail} maxLength={100} />
+                <Input onKeyPress={KeyPressEvents.isInputVarchar} maxLength={100} />
               </Form.Item>
             </Col>
           </Row>
@@ -479,6 +520,156 @@ function VillageForm19() {
                 <Input onKeyPress={KeyPressEvents.isInputVarchar} maxLength={100} />
               </Form.Item>
             </Col>
+          </Row>
+          <Row>
+            {sahayyaks.map((sahayyak, index) => (
+              <React.Fragment key={index}>
+                <Col xl={5} lg={5} md={11} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Pik Pahani Sahayyak Name' : ''}
+                    name={['sahayyaks', index, 'name']}
+                    rules={[{ max: 100, message: 'Max 100 characters allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter name"
+                      value={sahayyak.name}
+                      onChange={(e) => handleChangeSahayyak(index, 'name', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputVarchar}
+                      maxLength={100}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xl={1}></Col>
+
+                <Col xl={5} lg={5} md={11} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Mobile' : ''}
+                    name={['sahayyaks', index, 'mobile']}
+                    rules={[{ max: 10, message: 'Max 10 digits allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter mobile number"
+                      value={sahayyak.mobile}
+                      onChange={(e) => handleChangeSahayyak(index, 'mobile', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputNumber}
+                      maxLength={10}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xl={1}></Col>
+
+                <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Email' : ''}
+                    name={['sahayyaks', index, 'email']}
+                    rules={[{ max: 100, message: 'Max 100 characters allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter email"
+                      value={sahayyak.email}
+                      onChange={(e) => handleChangeSahayyak(index, 'email', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputVarchar}
+                      maxLength={100}
+                    />
+                  </Form.Item>
+                </Col>
+
+                {index === 0 && sahayyaks.length < 4 && (
+                  <Col
+                    xl={1}
+                    style={{ display: 'flex', alignItems: 'center', paddingLeft: '40px' }}
+                  >
+                    <Button type="dashed" onClick={handleAddSahayyak} icon={<PlusOutlined />} />
+                  </Col>
+                )}
+
+                {index > 0 && (
+                  <Col xl={1} style={{ display: 'flex', alignItems: 'center' }}>
+                    <MinusCircleOutlined
+                      style={{ color: 'red', fontSize: '18px', cursor: 'pointer' }}
+                      onClick={() => handleRemoveSahayyak(index)}
+                    />
+                  </Col>
+                )}
+              </React.Fragment>
+            ))}
+          </Row>
+          <Row>
+            {sarkariSansthaO.map((sarkariSansthaO, index) => (
+              <React.Fragment key={index}>
+                <Col xl={5} lg={5} md={11} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Sanstha Adhikari Name' : ''}
+                    name={['sahayyaks', index, 'name']}
+                    rules={[{ max: 100, message: 'Max 100 characters allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter name"
+                      value={sarkariSansthaO.name}
+                      onChange={(e) => handleChangeSahayyak(index, 'name', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputVarchar}
+                      maxLength={100}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xl={1}></Col>
+
+                <Col xl={5} lg={5} md={11} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Mobile' : ''}
+                    name={['sarkariSansthaO', index, 'mobile']}
+                    rules={[{ max: 10, message: 'Max 10 digits allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter mobile number"
+                      value={sarkariSansthaO.mobile}
+                      onChange={(e) => handleChangeSahayyak(index, 'mobile', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputNumber}
+                      maxLength={10}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xl={1}></Col>
+
+                <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+                  <Form.Item
+                    label={index === 0 ? 'Email' : ''}
+                    name={['sarkariSansthaO', index, 'email']}
+                    rules={[{ max: 100, message: 'Max 100 characters allowed' }]}
+                  >
+                    <Input
+                      placeholder="Enter email"
+                      value={sarkariSansthaO.email}
+                      onChange={(e) => handleChangeSahayyak(index, 'email', e.target.value)}
+                      onKeyPress={KeyPressEvents.isInputVarchar}
+                      maxLength={100}
+                    />
+                  </Form.Item>
+                </Col>
+
+                {index === 0 && sarkariSansthaO.length < 4 && (
+                  <Col
+                    xl={1}
+                    style={{ display: 'flex', alignItems: 'center', paddingLeft: '40px' }}
+                  >
+                    <Button type="dashed" onClick={handleAddSahayyak} icon={<PlusOutlined />} />
+                  </Col>
+                )}
+
+                {index > 0 && (
+                  <Col xl={1} style={{ display: 'flex', alignItems: 'center' }}>
+                    <MinusCircleOutlined
+                      style={{ color: 'red', fontSize: '18px', cursor: 'pointer' }}
+                      onClick={() => handleRemoveSahayyak(index)}
+                    />
+                  </Col>
+                )}
+              </React.Fragment>
+            ))}
           </Row>
           <Row>
             <Col xl={5} lg={5} md={11} sm={24} xs={24}>
