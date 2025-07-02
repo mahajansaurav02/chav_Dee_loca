@@ -1,5 +1,5 @@
 export default {
-  'challanDetails.table.challanNo': 'ई-चावडी भरणा क्रमांक',
+  'challanDetails.table.challanNo': 'इ-चावडी भरणा क्रमांक',
   'challanDetails.table.challanDate': 'चलनाची तारीख',
   'challanDetails.table.paymentMode': 'देय पद्धत',
   'challanDetails.table.totalAmount': 'एकूण रक्कम ₹',

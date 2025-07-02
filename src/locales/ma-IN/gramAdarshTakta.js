@@ -62,6 +62,9 @@ export default {
     'gramAdarshTakta.Sarpanch': 'सरपंचाचे नाव ',
     'gramAdarshTakta.PolicePatil': 'पोलिस पाटील नाव ',
     'gramAdarshTakta.kotval': 'कोतवालाचे नाव ',
+     'gramAdarshTakta.malePopulation': 'पुरुषांची लोकसंख्या',
+    'gramAdarshTakta.femalePopulation': 'स्त्रियांची लोकसंख्या',
+    'gramAdarshTakta.totalPopulation': 'एकूण लोकसंख्या',
 
 // report 
 

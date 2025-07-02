@@ -16,5 +16,20 @@ export default {
     'gramAdarshTakta.marketDay': 'Village market day',
     'gramAdarshTakta.fairday': 'Public Fair Day',
     'gramAdarshTakta.eSevakendra': 'Total e-Seva Kendra (Running)',
+    'gramAdarshTakta.malePopulation': 'Male Population',
+    'gramAdarshTakta.femalePopulation': 'Female Population',
+    'gramAdarshTakta.totalPopulation': 'Total Population',
+    'gramAdarshTakta.AkrushikJaminKshetra': 'Area under agricultural land',
+    'gramAdarshTakta.sarkariPaditKshetra': 'Area of government fallow land',
+    'gramAdarshTakta.padikKshetra': 'Area of other fallow land',
+    'gramAdarshTakta.potKharabKshetra': 'Area of pot bad land',
+
 
     }
+
+
+//     "gramAdarshTakta": {
+//     "malePopulation": "पुरुषांची लोकसंख्या",
+//     "femalePopulation": "स्त्रियांची लोकसंख्या",
+//     "totalPopulation": "एकूण लोकसंख्या"
+//   }

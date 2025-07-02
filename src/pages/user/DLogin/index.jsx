@@ -227,7 +227,7 @@ const Login = () => {
       okText: 'रद्द करा ',
 
       //cancelText: <FormattedMessage id="formLanguage.form.no" />,
-      title: 'ई-चावडी माहिती आणि मदत',
+      title: 'इ-चावडी माहिती आणि मदत',
       content: (
         <div>
           <a href={`${URLS.AuthURL}/file/1`} target="_blank" rel="noreferrer">
@@ -236,7 +236,7 @@ const Login = () => {
           <br></br>
           <br />
           <a href={`${URLS.AuthURL}/file/2`} target="_blank" rel="noreferrer">
-            २) ई-चावडी सर्वसमावेशक सूचना
+            २) इ-चावडी सर्वसमावेशक सूचना
           </a>
         </div>
       ),
@@ -250,7 +250,7 @@ const Login = () => {
 
       //cancelText: <FormattedMessage id="formLanguage.form.no" />,
 
-      title: 'ई-चावडी माहिती आणि मदत',
+      title: 'इ-चावडी माहिती आणि मदत',
       content: (
         <div>
           <p>
@@ -466,7 +466,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/10`} target="_blank" rel="noreferrer">
-                    ई-चावडी भाग - १ आकारणी विषयक अद्ययावतीकरण
+                    इ-चावडी भाग - १ आकारणी विषयक अद्ययावतीकरण
                   </a>
                 </Grid>
               </Grid>
@@ -507,7 +507,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/5`} target="_blank" rel="noreferrer">
-                    ई-चावडी भाग-1 (महसूल मागणी व वसुली)
+                    इ-चावडी भाग-1 (महसूल मागणी व वसुली)
                   </a>
                 </Grid>
               </Grid>
@@ -517,7 +517,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/6`} target="_blank" rel="noreferrer">
-                    ई-चावडी भाग-2 ( दप्तर अद्यायवत आणि अहवाल )
+                    इ-चावडी भाग-2 ( दप्तर अद्यायवत आणि अहवाल )
                   </a>
                 </Grid>
               </Grid>
@@ -527,7 +527,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href="https://forms.gle/B3d6dyscKc5hK9LZA" target="_blank" rel="noreferrer">
-                    ई-चावडी मधील काही समस्या अथवा सुधारणा असल्यास फॉर्म भरा
+                    इ-चावडी मधील काही समस्या अथवा सुधारणा असल्यास फॉर्म भरा
                   </a>
                 </Grid>
               </Grid>
@@ -547,7 +547,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/2`} target="_blank" rel="noreferrer">
-                    ई-चावडी सर्वसमावेशक सूचना
+                    इ-चावडी सर्वसमावेशक सूचना
                   </a>
                 </Grid>
               </Grid>
@@ -557,7 +557,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/3`} target="_blank" rel="noreferrer">
-                    ई-चावडी जमीन महसूल वसुली बाबत माहिती
+                    इ-चावडी जमीन महसूल वसुली बाबत माहिती
                   </a>
                 </Grid>
               </Grid>
@@ -577,7 +577,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href={`${URLS.AuthURL}/file/11`} target="_blank" rel="noreferrer">
-                    ई-चावडी प्रणाली -मार्गदर्शक सूचना
+                    इ-चावडी प्रणाली -मार्गदर्शक सूचना
                   </a>
                 </Grid>
               </Grid>
@@ -588,7 +588,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href="https://youtu.be/hdR8IvHex98" target="_blank" rel="noreferrer">
-                    ई-चावडी भाग १ (संपूर्ण विडीओ)
+                    इ-चावडी भाग १ (संपूर्ण विडीओ)
                   </a>
                 </Grid>
               </Grid>
@@ -598,7 +598,7 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={24} sm={24} md={10} lg={10} xl={10}>
                   <a href="https://youtu.be/6kqh8iujKQk" target="_blank" rel="noreferrer">
-                    ई-चावडी भाग २ (संपूर्ण विडीओ)
+                    इ-चावडी भाग २ (संपूर्ण विडीओ)
                   </a>
                 </Grid>
               </Grid> */}
@@ -624,7 +624,7 @@ const Login = () => {
             />
           </Form.Item> */}
           {/* <Modal
-            title="ई-चावडी माहिती आणि मदत"
+            title="इ-चावडी माहिती आणि मदत"
             visible={modalHelp}
             okText={<FormattedMessage id="formLanguage.form.yes" />}
             okType="danger"
@@ -639,7 +639,7 @@ const Login = () => {
             <br></br>
             <br />
             <a href="http://localhost:8091/echawdi/auth/file/2" target="_blank" rel="noreferrer">
-              २) ई-चावडी सर्वसमावेशक सूचना
+              २) इ-चावडी सर्वसमावेशक सूचना
             </a>
           </Modal> */}
         </div>
@@ -669,7 +669,7 @@ const Login = () => {
     //     </svg>
     //     {/* <h1>We&rsquo;ll be back soon!</h1> */}
     //     <div>
-    //       <p>नवीन ई-चावडी आज्ञावली साठी खालील संकेतस्थळावर क्लिक करा.</p>
+    //       <p>नवीन इ-चावडी आज्ञावली साठी खालील संकेतस्थळावर क्लिक करा.</p>
     //       <h2>
     //         {' '}
     //         <u>
@@ -682,7 +682,7 @@ const Login = () => {
     //       <br />
     //       <br />
     //       <p>
-    //         &mdash; ई-चावडी हेल्प डेस्क <br />
+    //         &mdash; इ-चावडी हेल्प डेस्क <br />
     //         जमाबंदी आयुक्त कार्यालय, पुणे{' '}
     //       </p>
     //     </div>

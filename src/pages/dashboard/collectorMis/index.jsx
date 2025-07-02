@@ -1940,7 +1940,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
       >
         {/* sauravmahajan */}
         {/* <Tabs.TabPane tab="कामकाज प्रगती अहवाल" key="tab1"> */}
-        <Tabs.TabPane tab="ई-चावडी कामकाज प्रगती अहवाल" key="tab1">
+        <Tabs.TabPane tab="इ-चावडी कामकाज प्रगती अहवाल" key="tab1">
           {/* Old 2023-2024 */}
           {showPreDashboard == true && showStaticDashboard != true && (
             <>
@@ -2119,7 +2119,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                 fontSize: '12px',
                               }}
                             >
-                              ई-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने
+                              इ-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने
                               वसुली न करणाऱ्या गावांची संख्या
                             </Typography>
                             <Divider variant="middle" />
@@ -3641,7 +3641,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                                 fontSize: '12px',
                               }}
                             >
-                              ई-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने
+                              इ-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने
                               वसुली न करणाऱ्या गावांची संख्या
                             </Typography>
                             <Divider variant="middle" />
@@ -3699,7 +3699,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                               fontSize: '12px',
                             }}
                           >
-                            ई-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने वसुली
+                            इ-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने वसुली
                             न करणाऱ्या गावांची संख्या
                           </Typography>
                           <Divider variant="middle" />
@@ -6451,7 +6451,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
             </Grid>
           </Paper>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="ई-चावडी वसूली अहवाल">
+        <Tabs.TabPane tab="इ-चावडी वसूली अहवाल">
           {/* Old 2023-2024 */}
           {showPreDashboard == true && showStaticDashboard != true && (
             <>
@@ -8292,7 +8292,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
                               fontSize: '12px',
                             }}
                           >
-                            ई-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने वसुली
+                            इ-चावडी प्रणाली- मध्ये एक ही खातेदारांची मागणी निश्चिती न केल्याने वसुली
                             न करणाऱ्या गावांची संख्या
                           </Typography>
                           <Divider variant="middle" />

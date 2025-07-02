@@ -15,6 +15,7 @@ import {
   Steps,
   Table,
   Tooltip,
+  Typography,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'umi';
@@ -27,7 +28,7 @@ import KeyPressEvents from '@/util/KeyPressEvents';
 import { InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { useForm } from 'antd/es/form/Form';
-import { set } from 'lodash';
+import { set, values } from 'lodash';
 
 const { Step } = Steps;
 
@@ -42,30 +43,76 @@ function GramAdarshChart() {
   const [villageSaja, setVillageSaja] = useState([]);
   const [villageSajjaCode, setVillageSajjaCode] = useState();
   const [villageSajjaName, setVillageSajjaName] = useState();
+  const [kuranArea, setKuranArea] = useState('');
+  const [bagayatArea, setBagayatArea] = useState('');
+  const [mahsulMagniAll, setMahsulMagniAll] = useState({
+    current: {
+      niyat: 0,
+      sankirn: 0,
+      total: 0,
+    },
+    previous: {
+      niyat: 0,
+      sankirn: 0,
+      total: 0,
+    },
+  });
+
+  // Initialize state with matching keys
+  const [itaritarmaganiData, setItaritarmaganiData] = useState({
+    current: {
+      shikshanupkar: 0,
+      rojgarhami: 0,
+    },
+    previous: {
+      shikshanupkar: 0,
+      rojgarhami: 0,
+    },
+  });
+  const [wellsData, setWellsData] = useState([
+    {
+      label: 'जलसिंचन विहीरिंची संख्या',
+      inuse: '',
+      notInUse: '',
+    },
+  ]);
+
+  const [akrushakData, setAkrushakData] = useState([
+    {
+      label: 'अकृषिक आकारणीची एकूण मागणी',
+      chaluVarsh: '',
+      maghilVarsh: '',
+    },
+  ]);
+
   const [VillageCCode1, setVillageCCode1] = useState();
 
-  const [bidumalaNiyatCurrent, setBidumalaNiyatCurrent] = useState();
-  const [akrushakCurrent, setAkrushakCurrent] = useState();
-  const [sankirnCurrent, setSankirnCurrent] = useState();
-  const [educationalCessCurrent, setEducationalCessCurrent] = useState();
-  const [employeeGuaranteeSchemeCurrent, setEmployeeGuaranteeSchemeCurrent] = useState();
-  const [totalAmountCurrent, setTotalAmountCurrent] = useState();
-  const [bidumalaNiyatPrevious, setBidumalaNiyatPrevious] = useState();
-  const [akrushakPrevious, setAkrushakPrevious] = useState();
-  const [sankirnPrevious, setSankirnPrevious] = useState();
-  const [educationalCessPrevious, setEducationalCessPrevious] = useState();
-  const [employeeGuaranteeSchemePrevious, setEmployeeGuaranteeSchemePrevious] = useState();
   const [totalAmountPrevious, setTotalAmountPrevious] = useState();
   const [vanJaminArea, setVanJaminArea] = useState('');
   const [villageSite, setVillageSite] = useState(0);
   const [potKharabArea, setPotKharabArea] = useState(0);
-  const [mahsulMafKshetra,setMahsulMafKshetra]=useState('')
+  const [mahsulMafKshetra, setMahsulMafKshetra] = useState('');
   const [akrushakArea, setAkrushakArea] = useState();
- const [khatedarKshetra, setKhatedarKshetra] = useState({
+  const [landTypes] = useState([
+    { key: 'kharip', label: 'खरीप', payloadKey: 'kharipArea' },
+    { key: 'rabbi', label: 'रबी', payloadKey: 'rabbiArea' },
+    { key: 'total', label: 'एकूण', payloadKey: 'kharipRabbiTotalArea' },
+  ]);
+  const [khsetrafalArea, setKhsetrafalArea] = useState({
+    bindumalaArea: '',
+    dumalaArea: '',
+    totalArea: '',
+  });
+  const [population, setPopulation] = useState({
+    male: '',
+    female: '',
+    total: '',
+  });
+  const [khatedarKshetra, setKhatedarKshetra] = useState({
     entries: [
       { khatedarSankhya: '', kshetra: '' },
-      { khatedarSankhya: '', kshetra: '' }
-    ]
+      { khatedarSankhya: '', kshetra: '' },
+    ],
   });
   const desgNew = localStorage.getItem('desg');
   const { sendRequest } = useAxios();
@@ -79,8 +126,14 @@ function GramAdarshChart() {
     villageData,
     villageName,
   } = useModel('details');
+  const modul=useModel('details');
   const [form15] = Form.useForm();
   const [form] = useForm();
+  const [formAnimal] = Form.useForm();        // For animal form
+  const [jalsinchanForm] = Form.useForm();        // For jalsinchan sadhane form
+  const [cropForm] = Form.useForm();        // For jalsinchan sadhane form
+  const [resoursesForm] = Form.useForm();        // For jalsinchan sadhane form
+
 
   let history = useHistory();
   const location = useLocation();
@@ -88,13 +141,19 @@ function GramAdarshChart() {
     '(अ) २.०२३ हेक्टरपेक्षा कमी ( म्हणजेच ५ एकरांपेक्षा कमी) जमीन धारण करणारे.',
     '(ब) २.०२३ हेक्टरपेक्षा जास्त (म्हणजेच ५ एकरापेक्षा अधिक) जमीन धारण करणारे.',
   ];
-  const landTypes = [
-    { key: 'kharip', label: 'खरीप' },
-    { key: 'rabbi', label: 'रबी' },
-    { key: 'उन्हाळी', label: 'उन्हाळी' },
-    { key: 'total', label: 'एकूण' },
-  ];
 
+  
+
+  useEffect(() => {
+    console.log(modul,"modul==========================================");
+    const male = parseInt(population.male) || 0;
+    const female = parseInt(population.female) || 0;
+    const total = male + female;
+
+    // Update both state and form value
+    setPopulation((prev) => ({ ...prev, total: total.toString() }));
+    form15.setFieldsValue({ totalPopulation: total });
+  }, [population.male, population.female]);
   useEffect(() => {
     setCodeVillage(villageData[0].cCode);
 
@@ -114,9 +173,10 @@ function GramAdarshChart() {
     getForestAndGaothanKshetra();
     getAkrushakAndPothkhrabAreaByccode();
     getKhatedarCountAndBelowArea();
-    getMahsulMafKshetra()
-    getJalSInchanWellData()
-    getBindumalaAndDumalaAreas()
+    getMahsulMafKshetra();
+    getJalSInchanWellData();
+    getBindumalaAndDumalaAreas();
+    getKuranandBagayatAreas();
   }, []);
 
   const handleOnChange = (value, event) => {
@@ -127,7 +187,6 @@ function GramAdarshChart() {
   const handleChangeForList = (e) => {
     setNoOfList(e);
   };
-
 
   const getAllTaxCalculationBycCode = async () => {
     const VillageCCode = villageData[0].cCode;
@@ -141,17 +200,43 @@ function GramAdarshChart() {
       null,
       (res) => {
         if (res.status == 200) {
-          setBidumalaNiyatCurrent(res.data.bidumalaNiyatCurrent);
-          setAkrushakCurrent(res.data.akrushakCurrent);
-          setSankirnCurrent(res.data.sankirnCurrent);
-          setEducationalCessCurrent(res.data.educationalCessCurrent);
-          setEmployeeGuaranteeSchemeCurrent(res.data.employeeGuaranteeSchemeCurrent);
-          setTotalAmountCurrent(res.data.totalAmountCurrent);
-          setBidumalaNiyatPrevious(res.data.bidumalaNiyatPrevious);
-          setAkrushakPrevious(res.data.akrushakPrevious);
-          setSankirnPrevious(res.data.sankirnPrevious);
-          setEducationalCessPrevious(res.data.educationalCessPrevious);
-          setEmployeeGuaranteeSchemePrevious(res.data.employeeGuaranteeSchemePrevious);
+          // setBidumalaNiyatCurrent(res.data.bidumalaNiyatCurrent);
+          // setSankirnCurrent(res.data.sankirnCurrent);
+          // setTotalAmountCurrent(res.data.totalAmountCurrent);
+          //           setTotalAmountPrevious(res.data.totalAmountPrevious);
+          //  setSankirnPrevious(res.data.sankirnPrevious);
+          // setBidumalaNiyatPrevious(res.data.bidumalaNiyatPrevious);
+          setMahsulMagniAll({
+            current: {
+              niyat: res.data.bidumalaNiyatCurrent || 0,
+              sankirn: res.data.sankirnCurrent || 0,
+              total: res.data.totalAmountCurrent || 0,
+            },
+            previous: {
+              niyat: res.data.bidumalaNiyatPrevious || 0,
+              sankirn: res.data.sankirnPrevious || 0,
+              total: res.data.totalAmountPrevious || 0,
+            },
+          });
+
+          setItaritarmaganiData({
+            current: {
+              shikshanupkar: res.data.educationalCessCurrent,
+              rojgarhami: res.data.employeeGuaranteeSchemeCurrent,
+            },
+            previous: {
+              shikshanupkar: res.data.educationalCessPrevious,
+              rojgarhami: res.data.employeeGuaranteeSchemePrevious,
+            },
+          });
+          setAkrushakData([
+            {
+              label: 'अकृषिक आकारणीची एकूण मागणी',
+              chaluVarsh: res.data.akrushakCurrent,
+              maghilVarsh: res.data.akrushakPrevious,
+            },
+          ]);
+
           setTotalAmountPrevious(res.data.totalAmountPrevious);
 
           setIsLoading(false);
@@ -174,7 +259,6 @@ function GramAdarshChart() {
       (res) => {
         if (res.status == 200) {
           setVanJaminArea(res.data.vanJaminArea);
-     
 
           setVillageSite(res.data.villageSite);
           setIsLoading(false);
@@ -185,7 +269,7 @@ function GramAdarshChart() {
       },
     );
   };
-const handleInputChange = (index, field, value) => {
+  const handleInputChange = (index, field, value) => {
     const newEntries = [...khatedarKshetra.entries];
     newEntries[index][field] = value;
     setKhatedarKshetra({ ...khatedarKshetra, entries: newEntries });
@@ -200,20 +284,20 @@ const handleInputChange = (index, field, value) => {
       'GET',
       null,
       (res) => {
-        console.log(res.data,"checkkkkkk khatakshetra api data")
+        console.log(res.data, 'checkkkkkk khatakshetra api data');
         if (res.status == 200) {
-  setKhatedarKshetra({
-        entries: [
-          { 
-            khatedarSankhya: res.data.khataCountWithName.toString(),
-            kshetra: res.data.areaBelow2023.toString() 
-          },
-          { 
-            khatedarSankhya: '', // Or set another value if needed
-            kshetra: res.data.areaAbove2023.toString() 
-          }
-        ]
-      });
+          setKhatedarKshetra({
+            entries: [
+              {
+                khatedarSankhya: res.data.khataCountBelow2023.toString(),
+                kshetra: res.data.areaBelow2023.toString(),
+              },
+              {
+                khatedarSankhya:res.data.khataCountAbove2023.toString(), // Or set another value if needed
+                kshetra: res.data.areaAbove2023.toString(),
+              },
+            ],
+          });
           setIsLoading(false);
         }
       },
@@ -254,74 +338,96 @@ const handleInputChange = (index, field, value) => {
     );
   };
 
-
-  const getMahsulMafKshetra=()=>{
-        const VillageCCode = villageData[0].cCode;
-         sendRequest(
+  const getMahsulMafKshetra = () => {
+    const VillageCCode = villageData[0].cCode;
+    sendRequest(
       `${URLS.BaseURL}/gramAdarshTakta/getMahasulMafOrKamakariJaminiData?cCode=${VillageCCode}`,
 
       'GET',
       null,
       (res) => {
         if (res.status == 200) {
-         
-         setMahsulMafKshetra(res.data.kamAkariArea)
+          setMahsulMafKshetra(res.data.kamAkariArea);
         }
       },
       (err) => {
         setIsLoading(false);
       },
     );
-
-  }
-
+  };
 
   const getJalSInchanWellData = async () => {
-            const VillageCCode = villageData[0].cCode;
+    const VillageCCode = villageData[0].cCode;
 
-   sendRequest(
+    sendRequest(
       `${URLS.BaseURL}/gramAdarshTakta/getJalsinchanWellCountByccode?cCode=${VillageCCode}`,
 
       'GET',
       null,
       (res) => {
         if (res.status == 200) {
-          console.log(
-            res.data,
-            'res.data./getJalsinchanWellCountByccode?cCode==========================================',
-          );
-        //  setMahsulMafKshetra(res.data.kamAkariArea)
+          setWellsData([
+            {
+              label: 'जलसिंचन विहीरिंची संख्या',
+              inuse: res.data.inUsedWell,
+              notInUse: res.data.notInUsedWell,
+            },
+          ]);
+          //  setMahsulMafKshetra(res.data.kamAkariArea)
         }
       },
       (err) => {
-        console.log(err, 'Error in /getJalsinchanWellCountByccode?cCode==========================================');
+        console.log(
+          err,
+          'Error in /getJalsinchanWellCountByccode?cCode==========================================',
+        );
         setIsLoading(false);
       },
     );
+  };
 
-  }
-
-
-const getBindumalaAndDumalaAreas = async () => {
-          const VillageCCode = villageData[0].cCode;
-sendRequest(
+  const getBindumalaAndDumalaAreas = async () => {
+    const VillageCCode = villageData[0].cCode;
+    sendRequest(
       `${URLS.BaseURL}/gramAdarshTakta/getBindumalaAndDumalaAreas?ccode=${VillageCCode}`,
 
       'GET',
       null,
       (res) => {
         if (res.status == 200) {
-         
-        //  setMahsulMafKshetra(res.data.kamAkariArea)
+          setKhsetrafalArea({
+            bindumalaArea: res.data.bindumalaArea,
+            dumalaArea: res.data.dumalaArea,
+            totalArea: res.data.totalArea,
+          });
+          //  setMahsulMafKshetra(res.data.kamAkariArea)
         }
       },
       (err) => {
         setIsLoading(false);
       },
     );
+  };
+  const getKuranandBagayatAreas = async () => {
+    const VillageCCode = villageData[0].cCode;
+    sendRequest(
+      `${URLS.BaseURL}/gramAdarshTakta/getKuranAndBagayatAreaByccode?cCode=${VillageCCode}`,
 
-}
-
+      'GET',
+      null,
+      (res) => {
+        if (res.status == 200) {
+          setKuranArea(res.data.kuran);
+          setBagayatArea(res.data.sumOfBgayatArea);
+          console.log(res.data, 'res.data.kuran_bagayat==========================================');
+          //  setMahsulMafKshetra(res.data.kamAkariArea)
+        }
+      },
+      (err) => {
+        setIsLoading(false);
+      },
+    );
+  };
   useEffect(() => {
     console.log('Updated potKharabArea:', potKharabArea);
   }, [potKharabArea]);
@@ -340,92 +446,148 @@ sendRequest(
   const prevStep = () => {
     setCurrentStep(currentStep - 1);
   };
+const crops = ['भात', 'खरीप ज्वारी', 'रबी ज्वारी', 'गहू', 'भुईमूग', 'ऊस', 'कडधान्य', 'इतर पिके'];
 
-  const crops = ['भात', 'खरीप ज्वारी', 'रबी ज्वारी', 'गहू', 'भुईमूग', 'ऊस', 'कडधान्य', 'इतर पिके'];
+// Initialize default values for all crops
+const initialCropValues = Object.fromEntries(
+  crops.map((_, index) => [
+    index,
+    {
+      jalashay: { hectare: 0 },
+      koradahu: { hectare: 0 },
+      itar: { hectare: 0 },
+      total: { hectare: 0 }
+    }
+  ]
+)
+)
 
-  const columns = [
-    {
-      title: 'पिकाचे नाव',
-      dataIndex: 'crop',
-      key: 'crop',
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: 'जलसिंचित क्षेत्र',
-      children: [
-        {
-          title: 'हेक्टर.आर',
-          dataIndex: ['jalashay', 'hectare'],
-          render: (_, record) => (
-            <Form.Item name={[record.key, 'jalashay', 'hectare']} style={{ margin: 0 }}>
-              <InputNumber min={0} defaultValue={0} style={{ width: '100%' }} />
-            </Form.Item>
-          ),
-        },
-      ],
-    },
-    {
-      title: 'कोरडवाहू क्षेत्र',
-      children: [
-        {
-          title: 'हेक्टर.आर',
-          dataIndex: ['koradahu', 'hectare'],
-          render: (_, record) => (
-            <Form.Item name={[record.key, 'koradahu', 'hectare']} style={{ margin: 0 }}>
-              <InputNumber min={0} defaultValue={0} style={{ width: '100%' }} />
-            </Form.Item>
-          ),
-        },
-      ],
-    },
-    {
-      title: 'इतर क्षेत्र',
-      children: [
-        {
-          title: 'हेक्टर.आर',
-          dataIndex: ['itar', 'hectare'],
-          render: (_, record) => (
-            <Form.Item name={[record.key, 'itar', 'hectare']} style={{ margin: 0 }}>
-              <InputNumber min={0} defaultValue={0} style={{ width: '100%' }} />
-            </Form.Item>
-          ),
-        },
-      ],
-    },
-    {
-      title: 'एकूण',
-      children: [
-        {
-          title: 'हेक्टर.आर',
-          dataIndex: ['total', 'hectare'],
-          render: (_, record) => (
-            <Form.Item name={[record.key, 'total', 'hectare']} style={{ margin: 0 }}>
-              <InputNumber min={0} defaultValue={0} style={{ width: '100%' }} />
-            </Form.Item>
-          ),
-        },
-      ],
-    },
-  ];
+// const [cropForm] = Form.useForm();
 
-  const dataSource = crops.map((crop, index) => ({
-    key: index,
-    crop,
-  }));
+// Data source for the table
+const dataSource = crops.map((crop, index) => ({
+  key: index,
+  crop
+}));
 
-  useEffect(() => {
-    const initialValues = {};
-    dataSource.forEach((item) => {
-      initialValues[item.key] = {
-        jalashay: { hectare: 0, are: 0 },
-        koradahu: { hectare: 0, are: 0 },
-        itar: { hectare: 0, are: 0 },
-        total: { hectare: 0, are: 0 },
-      };
-    });
-    form.setFieldsValue(initialValues);
-  }, [form, dataSource]);
+// Table columns configuration
+const columns = [
+  {
+    title: 'पिकाचे नाव',
+    key: 'crop',
+    render: (_, record) => <b>{record.crop}</b>,
+  },
+  {
+    title: 'जलसिंचित क्षेत्र',
+    children: [{
+      title: 'हेक्टर.आर',
+      render: (_, record) => (
+        <Form.Item 
+          name={[record.key, 'jalashay', 'hectare']}
+          rules={[{ required: true, message: 'आवश्यक' }]}
+          initialValue={0}
+          style={{ margin: 0 }}
+        >
+          <InputNumber 
+            min={0} 
+            style={{ width: '100%' }}
+            onChange={() => calculateTotal(record.key)}
+          />
+        </Form.Item>
+      ),
+    }],
+  },
+  {
+    title: 'कोरडवाहू क्षेत्र',
+    children: [{
+      title: 'हेक्टर.आर',
+      render: (_, record) => (
+        <Form.Item 
+          name={[record.key, 'koradahu', 'hectare']}
+          rules={[{ required: true, message: 'आवश्यक' }]}
+          initialValue={0}
+          style={{ margin: 0 }}
+        >
+          <InputNumber 
+            min={0} 
+            style={{ width: '100%' }}
+            onChange={() => calculateTotal(record.key)}
+          />
+        </Form.Item>
+      ),
+    }],
+  },
+  {
+    title: 'इतर क्षेत्र',
+    children: [{
+      title: 'हेक्टर.आर',
+      render: (_, record) => (
+        <Form.Item 
+          name={[record.key, 'itar', 'hectare']}
+          rules={[{ required: true, message: 'आवश्यक' }]}
+          initialValue={0}
+          style={{ margin: 0 }}
+        >
+          <InputNumber 
+            min={0} 
+            style={{ width: '100%' }}
+            onChange={() => calculateTotal(record.key)}
+          />
+        </Form.Item>
+      ),
+    }],
+  },
+  {
+    title: 'एकूण',
+    children: [{
+      title: 'हेक्टर.आर',
+      render: (_, record) => (
+        <Form.Item 
+          name={[record.key, 'total', 'hectare']}
+          style={{ margin: 0 }}
+        >
+          <InputNumber 
+            min={0} 
+            style={{ width: '100%' }}
+            readOnly
+            className="total-field"
+          />
+        </Form.Item>
+      ),
+    }],
+  },
+];
 
+// Calculate total automatically
+const calculateTotal = (key) => {
+  const values = cropForm.getFieldsValue();
+  const { jalashay = { hectare: 0 }, koradahu = { hectare: 0 }, itar = { hectare: 0 } } = values[key] || {};
+  
+  const total = Number(jalashay.hectare || 0) + 
+                Number(koradahu.hectare || 0) + 
+                Number(itar.hectare || 0);
+  
+  cropForm.setFieldsValue({
+    [key]: {
+      ...values[key],
+      total: { hectare: total }
+    }
+  });
+};
+
+// Initialize form with default values
+useEffect(() => {
+  cropForm.setFieldsValue(initialCropValues);
+}, [cropForm]);
+ 
+  const handleInputforAkrushakChange = (index, field, value) => {
+    const newData = [...akrushakData];
+    newData[index] = {
+      ...newData[index],
+      [field]: value,
+    };
+    setAkrushakData(newData);
+  };
   const akrushakcolumns = [
     {
       title: 'अकृषिक आकारणीची एकूण मागणी',
@@ -437,30 +599,72 @@ sendRequest(
       dataIndex: 'chaluVarsh',
       key: 'chaluVarsh',
       render: (_, record, index) => (
-        <Form.Item
-          name={['mahgani', index, 'chaluVarsh']}
-          rules={[{ required: true, message: 'Enter Chalu Varsh' }]}
-          noStyle
-        >
-          <Input placeholder="चालू वर्ष" />
-        </Form.Item>
+        <Input
+          placeholder="चालू वर्ष"
+          value={akrushakData[index]?.chaluVarsh}
+          onChange={(e) => handleInputforAkrushakChange(index, 'chaluVarsh', e.target.value)}
+        />
       ),
     },
     {
-      title: 'मागील वर्ष ',
+      title: 'मागील वर्ष',
       dataIndex: 'maghilVarsh',
       key: 'maghilVarsh',
       render: (_, record, index) => (
-        <Form.Item
-          name={['mahgani', index, 'maghilVarsh']}
-          rules={[{ required: true, message: 'Enter Maghil Varsh' }]}
-          noStyle
-        >
-          <Input placeholder="मागील वर्ष" />
-        </Form.Item>
+        <Input
+          placeholder="मागील वर्ष"
+          value={akrushakData[index]?.maghilVarsh}
+          onChange={(e) => handleInputforAkrushakChange(index, 'maghilVarsh', e.target.value)}
+        />
       ),
     },
   ];
+  const kshetrafalcolumns = [
+    {
+      title: 'एकूण क्षेत्रफळ',
+      dataIndex: 'label',
+      key: 'label',
+    },
+    {
+      title: 'बिन-दुमाला क्षेत्रफळ',
+      dataIndex: 'bindumalaKshetr',
+      key: 'bindumalaKshetr',
+      render: () => (
+        <Input
+          value={khsetrafalArea.bindumalaArea}
+          onChange={(e) => handlekshetrafalInputChange('bindumalaArea', e.target.value)}
+        />
+      ),
+    },
+    {
+      title: 'दुमाला क्षेत्रफळ',
+      dataIndex: 'dumalaKshetr',
+      key: 'dumalaKshetr',
+      render: () => (
+        <Input
+          value={khsetrafalArea.dumalaArea}
+          onChange={(e) => handlekshetrafalInputChange('dumalaArea', e.target.value)}
+        />
+      ),
+    },
+    {
+      title: 'संपूर्ण क्षेत्रफळ',
+      dataIndex: 'totalKshetr',
+      key: 'totalKshetr',
+      render: () => (
+        <Input
+          value={khsetrafalArea.totalArea}
+          onChange={(e) => handlekshetrafalInputChange('totalArea', e.target.value)}
+        />
+      ),
+    },
+  ];
+  const handlekshetrafalInputChange = (fieldName, value) => {
+    setKhsetrafalArea((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  };
 
   const akrushakdataSource = [
     {
@@ -514,7 +718,10 @@ sendRequest(
   ];
 
   useEffect(() => {
-    const initialValues = {};
+    const initialValues = {
+    };
+    initialValues.animalWithHorn = 0;
+    initialValues.animalWithoutHorn = 0;
     const setDefaults = (items) => {
       items.forEach((item) => {
         initialValues[item.key] = { number: 0, hectare: 0, are: 0 };
@@ -526,8 +733,8 @@ sendRequest(
   }, [form]);
 
   const Yeardata = [
-    { key: '1', year: 'चालू वर्ष' },
-    { key: '2', year: 'मागील वर्ष' },
+    { key: 'current', year: 'चालू वर्ष' },
+    { key: 'previous', year: 'मागील वर्ष' },
   ];
 
   const maganiYearcolumns = [
@@ -541,9 +748,13 @@ sendRequest(
       dataIndex: 'niyat',
       key: 'niyat',
       render: (_, record) => (
-        <Form.Item name={[record.key, 'niyat']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
+        <InputNumber
+          min={0}
+          value={mahsulMagniAll[record.key]?.niyat}
+          onChange={(value) => handleMahsulMaganiValueChange(record.key, 'niyat', value)}
+          size="small"
+          style={{ width: '200px' }}
+        />
       ),
     },
     {
@@ -551,29 +762,46 @@ sendRequest(
       dataIndex: 'sankirn',
       key: 'sankirn',
       render: (_, record) => (
-        <Form.Item name={[record.key, 'sankirn']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
+        <InputNumber
+          min={0}
+          value={mahsulMagniAll[record.key]?.sankirn}
+          onChange={(value) => handleMahsulMaganiValueChange(record.key, 'sankirn', value)}
+          size="small"
+          style={{ width: '200px' }}
+        />
       ),
     },
     {
       title: 'एकूण',
-      dataIndex: 'ekun',
-      key: 'ekun',
-      render: (_, record, index) => {
-        return (
-          <Form.Item shouldUpdate style={{ margin: 0 }}>
-            {({ getFieldValue }) => {
-              const niyat = getFieldValue([record.key, 'niyat']) || 0;
-              const sankirn = getFieldValue([record.key, 'sankirn']) || 0;
-              const total = niyat + sankirn;
-              return <span>{total}</span>;
-            }}
-          </Form.Item>
-        );
-      },
+      dataIndex: 'total',
+      key: 'total',
+      render: (_, record) => <span>{mahsulMagniAll[record.key]?.total}</span>,
     },
   ];
+
+  const handleMahsulMaganiValueChange = (yearKey, field, value) => {
+    setMahsulMagniAll((prev) => ({
+      ...prev,
+      [yearKey]: {
+        ...prev[yearKey],
+        [field]: value || 0,
+        total:
+          field === 'niyat'
+            ? (value || 0) + prev[yearKey].sankirn
+            : prev[yearKey].niyat + (value || 0),
+      },
+    }));
+  };
+
+  const handleItaritarmaganiValueChange = (yearKey, field, value) => {
+    setItaritarmaganiData((prev) => ({
+      ...prev,
+      [yearKey]: {
+        ...prev[yearKey],
+        [field]: value || 0,
+      },
+    }));
+  };
 
   const itaritarmaganiYearcolumns = [
     {
@@ -582,13 +810,17 @@ sendRequest(
       key: 'year',
     },
     {
-      title: 'शिक्षण कर ',
+      title: 'शिक्षण कर',
       dataIndex: 'shikshanupkar',
       key: 'shikshanupkar',
       render: (_, record) => (
-        <Form.Item name={[record.key, 'shikshanupkar']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
+        <InputNumber
+          min={0}
+          value={itaritarmaganiData[record.key]?.shikshanupkar}
+          onChange={(value) => handleItaritarmaganiValueChange(record.key, 'shikshanupkar', value)}
+          size="small"
+          style={{ width: '200px' }}
+        />
       ),
     },
     {
@@ -596,33 +828,35 @@ sendRequest(
       dataIndex: 'rojgarhami',
       key: 'rojgarhami',
       render: (_, record) => (
-        <Form.Item name={[record.key, 'rojgarhami']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
-      ),
-    },
-
-    {
-      title: 'पाटबंधारे विषयक येणे रक्कम ',
-      dataIndex: 'pathbandharerakkam',
-      key: 'pathbandharerakkam',
-      render: (_, record) => (
-        <Form.Item name={[record.key, 'pathbandharerakkam']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
-      ),
-    },
-    {
-      title: 'इतर कर ',
-      dataIndex: 'itarkar',
-      key: 'itarkar',
-      render: (_, record) => (
-        <Form.Item name={[record.key, 'itarkar']} style={{ margin: 0 }}>
-          <InputNumber min={0} defaultValue={0} size="small" style={{ width: '200px' }} />
-        </Form.Item>
+        <InputNumber
+          min={0}
+          value={itaritarmaganiData[record.key]?.rojgarhami}
+          onChange={(value) => handleItaritarmaganiValueChange(record.key, 'rojgarhami', value)}
+          size="small"
+          style={{ width: '200px' }}
+        />
       ),
     },
   ];
+
+
+// Set initial values when data is available
+useEffect(() => {
+  const initialValues = {};
+  waterSypplytype.forEach(type => {
+    initialValues[type.key] = {
+      wellsNo: 0,
+      riverNo: 0,
+      tubewellsNo: 0,
+      kalvaNo: 0,
+      talaavNo: 0
+    };
+  });
+  resoursesForm.setFieldsValue(initialValues);
+}, []);
+
+
+
 
   const waterSypplytype = [
     { key: '1', supply: 'पिण्यासाठी' },
@@ -704,46 +938,59 @@ sendRequest(
     },
     {
       title: 'शिंग असलेली',
-      dataIndex: 'shingAsleli',
-      key: 'shingAsleli',
+      key: 'animalWithHorn',
       render: (_, record, index) => (
-        <Form.Item
-          name={['animals', index, 'shingAsleli']}
+        <Form.Item  
+          name={`animalWithHorn`} // Changed to direct field name
           rules={[{ required: true, message: 'शिंग असलेली संख्या द्या' }]}
           noStyle
         >
-          <Input placeholder="शिंग असलेली" />
+          <InputNumber placeholder="संख्या" style={{ width: '100%' }} />
         </Form.Item>
       ),
     },
     {
       title: 'शिंग नसलेली',
-      dataIndex: 'shingNasleli',
-      key: 'shingNasleli',
+      key: 'animalWithoutHorn',
       render: (_, record, index) => (
         <Form.Item
-          name={['animals', index, 'shingNasleli']}
+          name={`animalWithoutHorn`} // Changed to direct field name
           rules={[{ required: true, message: 'शिंग नसलेली संख्या द्या' }]}
           noStyle
         >
-          <Input placeholder="शिंग नसलेली" />
+          <InputNumber placeholder="संख्या" style={{ width: '100%' }} />
         </Form.Item>
       ),
     },
   ];
 
+  // Simplified data source
+  const animaldataSource = [
+    {
+      key: '1',
+      label: 'एकूण प्राणी',
+    },
+  ];
   const irrigatedwellsSource = [
     {
       key: '1',
       label: '',
     },
   ];
-  const animaldataSource = [
-    {
-      key: '1',
-      label: '',
-    },
-  ];
+  // const animaldataSource = [
+  //   {
+  //     key: '1',
+  //     label: '',
+  //   },
+  // ];
+  const handleInputWellDataChange = (index, field, value) => {
+    const newData = [...wellsData];
+    newData[index] = {
+      ...newData[index],
+      [field]: value,
+    };
+    setWellsData(newData);
+  };
 
   const irrigatedwellsColumns = [
     {
@@ -752,26 +999,279 @@ sendRequest(
       key: 'label',
     },
     {
-      title: 'वापरात असलेल्या विहीरिंची संख्या ',
+      title: 'वापरात असलेल्या विहीरिंची संख्या',
       dataIndex: 'inuse',
       key: 'inuse',
       render: (_, record, index) => (
-        <Form.Item name={['inUsewells', index, 'inuse']} noStyle>
-          <Input placeholder="वापरात असलेल्या विहीरिंची संख्या" />
-        </Form.Item>
+        <Input
+          placeholder="वापरात असलेल्या विहीरिंची संख्या"
+          value={wellsData[index]?.inuse}
+          onChange={(e) => handleInputWellDataChange(index, 'inuse', e.target.value)}
+        />
       ),
     },
     {
-      title: 'वापरात नसलेल्या  विहीरिंची संख्या',
+      title: 'वापरात नसलेल्या विहीरिंची संख्या',
       dataIndex: 'notInUse',
       key: 'notInUse',
       render: (_, record, index) => (
-        <Form.Item name={['notInUsewells', index, 'notInUse']} noStyle>
-          <Input placeholder="वापरात नसलेल्या  विहीरिंची संख्या" />
-        </Form.Item>
+        <Input
+          placeholder="वापरात नसलेल्या विहीरिंची संख्या"
+          value={wellsData[index]?.notInUse}
+          onChange={(e) => handleInputWellDataChange(index, 'notInUse', e.target.value)}
+        />
       ),
     },
   ];
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      // First validate all fields
+      await form15.validateFields(); 
+        await form.validateFields();
+      await cropForm.validateFields(); 
+await resoursesForm.validateFields();
+
+      const formValues = form15.getFieldsValue(true);
+      const Values = form.getFieldsValue(true);
+      const animalValues = formAnimal.getFieldsValue(true);
+      const jalsinchantypesValues = jalsinchanForm.getFieldsValue(true);
+  const resoursesValues = resoursesForm.getFieldsValue(true);
+console.log('resoursesValues:', resoursesValues);
+
+// Process water supply resources data
+const waterSupplyResources = waterSypplytype.map(type => {
+  const typeData = resoursesValues[type.key] || {};
+  return {
+    supplyType: type.supply,
+    wellsNo: typeData.wellsNo || 0,
+    riverNo: typeData.riverNo || 0,
+    tubewellsNo: typeData.tubewellsNo || 0,
+    kalvaNo: typeData.kalvaNo || 0,
+    talaavNo: typeData.talaavNo || 0,
+  };
+});
+
+console.log('Processed water supply resources:', waterSupplyResources);
+      const dynamicLandPayload = {};
+      landTypes.forEach((item) => {
+        dynamicLandPayload[item.payloadKey] = parseFloat(Values[`land_${item.key}`]) || 0;
+      });
+      
+
+
+
+
+// crop
+
+await cropForm.validateFields();
+    
+    // Get all form values
+    const cropValues = cropForm.getFieldsValue(true);
+    console.log('Form values:', formValues);
+    
+    // Map to required payload structure
+    const cropAreas = crops.map((crop, index) => {
+      const cropData = cropValues[index] || {};
+      return {
+        cropName: crop,
+        irrigationArea: Number(cropData?.jalashay?.hectare) || 0,
+        koradwahuArea: Number(cropData?.koradahu?.hectare) || 0,
+        otherArea: Number(cropData?.itar?.hectare) || 0,
+        totalCropArea: Number(cropData?.total?.hectare) || 0,
+      };
+    });
+    
+    console.log('Processed crop areas:', cropAreas);
+
+
+
+
+
+
+
+
+
+
+
+
+      const payload = {
+        ...dynamicLandPayload,
+        districtCode: parseInt(districtCode),
+        talukaCode: parseInt(talukaCode),
+        ccode: villageData[0].cCode,
+        revenueYear: '2024-2025', // You may want to make this dynamic
+        villageTotalArea: parseFloat(formValues.area) || 0,
+        villagePopulation: parseInt(population.total) || 0,
+        malePopulation: parseInt(population.male), // Add these fields to your form if needed
+        femalePopulation: parseInt(population.female),
+        otherPopulation: 0,
+        KhataCountAbove2023: parseInt(khatedarKshetra.entries[1]?.khatedarSankhya) || 0,
+        KhataCountBelow2023: parseInt(khatedarKshetra.entries[0]?.khatedarSankhya) || 0,
+        khatedarBhogwataAreaGrater: parseFloat(khatedarKshetra.entries[1].kshetra) || 0,
+        khatedarBhogwataAreaLess: parseFloat(khatedarKshetra.entries[0].kshetra) || 0,
+        landlessFarmLaborers: parseInt(formValues.landlessworkers) || 0,
+        numberOfArtisans: parseInt(formValues.craftsmenno) || 0,
+        bindumalaArea: parseFloat(khsetrafalArea.bindumalaArea) || 0,
+        dumalaArea: parseFloat(khsetrafalArea.dumalaArea) || 0,
+        bindumalaDumalaTotalArea: parseFloat(khsetrafalArea.totalArea) || 0,
+        //  kharipArea: parseFloat(formValues.land_kharip) || 0,
+        // rabbiArea: parseFloat(formValues.land_rabbi) || 0,
+        // kharipRabbiTotalArea: parseFloat(formValues.land_total) || 0,
+        akrushik: parseFloat(akrushakArea) || 0,
+        govPadikLandArea: parseFloat(formValues.sarkariPaditKshetra) || 0,
+        padikLandArea: parseFloat(formValues.padikKshetra) || 0,
+        potkharabaArea: parseFloat(potKharabArea) || 0,
+        gavthanArea: parseFloat(villageSite) || 0,
+        forestLandArea: parseFloat(vanJaminArea) || 0,
+        kuranArea: parseFloat(kuranArea) || 0, // Add to form if needed
+        plargroundArea: parseFloat(formValues.playgroundArea) || 0,
+        mahsulmafOrKamakariLandArea: parseFloat(mahsulMafKshetra) || 0,
+        areaUnderEncroachment: parseFloat(formValues.encroachmentArea) || 0,
+        agriTotalDemand: mahsulMagniAll.current.total || 0,
+        agriTotalNiyatDemand: mahsulMagniAll.current.niyat || 0,
+        agriTotalSankirnDemand: mahsulMagniAll.current.sankirn || 0,
+        agriTotalDemandPrevious: mahsulMagniAll.previous.total || 0,
+        agriTotalNiyatDemandPrevious: mahsulMagniAll.previous.niyat || 0,
+        agriTotalSankirnDemandPrevious: mahsulMagniAll.previous.sankirn || 0,
+        akrushakTotalDemand: akrushakData[0]?.chaluVarsh || 0,
+        akrushakTotalDemandPrevious: akrushakData[0]?.maghilVarsh || 0,
+        educationalCessCurrent: itaritarmaganiData.current.shikshanupkar || 0,
+        educationalCessPrevious: itaritarmaganiData.previous.shikshanupkar || 0,
+        employeeGuaranteeSchemeCurrent: itaritarmaganiData.current.rojgarhami || 0,
+        employeeGuaranteeSchemePrevious: itaritarmaganiData.previous.rojgarhami || 0,
+        sankirnCurrent: mahsulMagniAll.current.sankirn || 0,
+        sankirnPrevious: mahsulMagniAll.previous.sankirn || 0,
+        averageRainfall: parseFloat(formValues.rainfall) || 0,
+        drinkingWaterResourceCount: parseInt(formValues.waterResoursesnos) || 0,
+        irrWellsUsed: parseInt(wellsData[0]?.inuse) || 0,
+        irrWellsUnused: parseInt(wellsData[0]?.notInUse) || 0,
+         irrKalwaArea: jalsinchantypesValues[1]?.hectare || 0,
+  irrBandhArea: parseInt(jalsinchantypesValues[2]?.hectare) || 0,
+  irrWellMotaArea: parseInt(jalsinchantypesValues['3a']?.hectare) || 0,
+  irrWellOilEnginArea: parseInt(jalsinchantypesValues['3b']?.hectare) || 0,
+  irrWellElectricMotarArea: parseInt(jalsinchantypesValues['3c']?.hectare) || 0,
+  irrUgharanArea: parseInt(jalsinchantypesValues['3d']?.hectare) || 0,
+
+  irrWellPumpSanchArea: parseInt(jalsinchantypesValues['3e']?.hectare) || 0,
+  irrWellArea: parseInt(jalsinchantypesValues[3]?.hectare) || 0,
+  irrBudkiArea: parseInt(jalsinchantypesValues[4]?.hectare) || 0,
+  otherIrrigation: parseInt(jalsinchantypesValues[5]?.hectare) || 0,
+
+  // count
+     irrKalwaCount: jalsinchantypesValues[1]?.number || 0,
+  irrBandhCount: parseInt(jalsinchantypesValues[2]?.number) || 0,
+  irrWellMotaCount: parseInt(jalsinchantypesValues['3a']?.number) || 0,
+  irrWellOilEnginCount: parseInt(jalsinchantypesValues['3b']?.number) || 0,
+  irrWellElectricMotarCount: parseInt(jalsinchantypesValues['3c']?.number) || 0,
+  irrUgharanCount: parseInt(jalsinchantypesValues['3d']?.number) || 0,
+   
+  irrWellPumpSanchCount: parseInt(jalsinchantypesValues['3e']?.number) || 0,
+  irrWellCount: parseInt(jalsinchantypesValues[3]?.number) || 0,
+  irrBudkiCount: parseInt(jalsinchantypesValues[4]?.number) || 0,
+  other_irrigation_count: parseInt(jalsinchantypesValues[5]?.number) || 0,
+
+  //   "irrKalwaCount": 3,
+  // "irrBandhCount": 2,
+  // "irrWellMotaCount": 4,
+  // "irrWellOilEnginCount": 5,
+  // "irrWellElectricMotarCount": 6,
+  // "irrWellPumpSanchCount": 3,
+  // "irrWellCount": 18,
+  // "irrBudkiCount": 7,
+  // "irrUgharanCount": 2,
+        bagayatArea: parseFloat(bagayatArea) || 0,
+        animalWithHorn: animalValues.animalWithHorn || 0,
+        animalWithoutHorn: animalValues.animalWithoutHorn || 0,
+        gramPanchayatOrGroupGramGramPanchayat: parseInt(formValues.grampanchayat) || 0,
+        judiciary: parseInt(formValues.nyaypanchyayct) || 0,
+        panchayatCommittee: parseInt(formValues.panchayatSamiti) || 0,
+        nearestPoliceStation: parseInt(formValues.policeStation) || 0,
+        postalOffice: parseInt(formValues.postOffice) || 0,
+        primarySchool: parseInt(formValues.primarySchool) || 0,
+        secondarySchool: parseInt(formValues.secondarySchool) || 0,
+        college: parseInt(formValues.colleges) || 0,
+        publicHospital: parseInt(formValues.hospitals) || 0,
+        transport: parseInt(formValues.transportations) || 0,
+        coOrganization: parseInt(formValues.GovOrg) || 0,
+        coOperativeFactories: parseInt(formValues.CooperativeFactories) || 0,
+        library: 0, // Add to form if needed
+        nearestRailwayStation: 0, // Add to form if needed
+        railwayStationDistanceFromVillage: formValues.NearestRailwayStationandDistance, // Add to form if needed
+        chawadi: 0, // Add to form if needed
+        rashanShopCount: parseInt(formValues.rashanshop) || 0,
+        sarpanchName: formValues.sarpanch || '',
+        policePatilName: formValues.PolicePatil || '',
+        kotwalCount: parseInt(formValues.kotvalCount) || 0,
+        kotwalName: formValues.kotval || '',
+        cropAreas: cropAreas,
+        total_eseva_kendra: parseInt(formValues.eSevakendraNos) || 0,
+//         1
+// : 
+// kalvaNo
+// : 
+// 5
+// riverNo
+// : 
+// 5
+// talaavNo
+// : 
+// 5
+// tubewellsNo
+// : 
+// 5
+// wellsNo
+// : 
+// 5
+         panipuravathaDrinkingWellCount: resoursesValues[1].wellsNo,
+    panipuravathaDrinkingRiverCount: resoursesValues[1].riverNo,
+    panipuravathaDrinkingVindhanVihirCount: resoursesValues[1].tubewellsNo,
+    panipuravathaDrinkingKalwaCount: resoursesValues[1].kalvaNo,
+    panipuravathaDrinkingTalawCount: resoursesValues[1].talaavNo,
+    panipuravathaAgriWellCount: resoursesValues[2].wellsNo,
+    panipuravathaAgriRiverCount: resoursesValues[2].riverNo,
+    panipuravathaAgriVindhanVihirCount: resoursesValues[2].tubewellsNo,
+    panipuravathaAgriKalwaCount: resoursesValues[2].kalvaNo,
+    panipuravathaAgriTalawCount: resoursesValues[2].talaavNo,
+      };
+
+      // Submit to API
+      const response = await sendRequest(
+        `${URLS.BaseURL}/gramAdarshTakta/saveGramAdarshTaktaData`,
+        'POST',
+        payload,
+        (res) => {
+          message.success('Form submitted successfully!');
+          setIsLoading(false);
+          
+          form15.resetFields();
+          resoursesForm.resetFields();
+          jalsinchanForm.resetFields();
+          form.resetFields();
+          formAnimal.resetFields();
+           history.push({
+      pathname: `/reports/village-form-1`,
+    });
+        },
+        (err) => {
+          message.error('Error submitting form');
+          setIsLoading(false);
+        },
+      );
+    } catch (error) {
+      console.error('Validation or submission error:', error);
+      setIsLoading(false);
+
+      // Only show validation error message if it's a validation error
+      if (error.errorFields) {
+        message.error('कृपया सर्व फील्ड्स भरा.');
+      } else {
+        message.error('Error submitting form');
+      }
+    }
+  };
 
   const steps = [
     {
@@ -828,10 +1328,12 @@ sendRequest(
                 ]}
                 label={<FormattedMessage id="gramAdarshTakta.mahsulMafJaminKshetra" />}
               >
-                <Input maxLength={12}  
+                <Input
+                  maxLength={12}
                   value={mahsulMafKshetra}
                   onChange={(e) => setMahsulMafKshetra(e.target.value)}
-                  onKeyPress={KeyPressEvents.isInputNumber} />
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -843,10 +1345,14 @@ sendRequest(
                   { required: true, message: 'Pasture Area is Required' },
                   { max: 12, message: 'Pasture Area should be upto 12 Characters' },
                 ]}
-                name={'pastureArea'}
                 label={<FormattedMessage id="gramAdarshTakta.pastureArea" />}
               >
-                <Input maxLength={12} onKeyPress={KeyPressEvents.isInputNumber} />
+                <Input
+                  maxLength={12}
+                  value={kuranArea}
+                  onChange={(e) => setKuranArea(e.target.value)}
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
             <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
@@ -865,10 +1371,12 @@ sendRequest(
                 ]}
                 label={<FormattedMessage id="gramAdarshTakta.AkrushikJaminKshetra" />}
               >
-                <Input maxLength={12}  
+                <Input
+                  maxLength={12}
                   value={akrushakArea}
                   onChange={(e) => setAkrushakArea(e.target.value)}
-                  onKeyPress={KeyPressEvents.isInputNumber} />
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
             <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
@@ -891,7 +1399,7 @@ sendRequest(
                   { required: true, message: 'Wasteland area is Required' },
                   { max: 12, message: 'Wasteland area should be upto 12 Characters' },
                 ]}
-                name={'pastureArea'}
+                name={'padikKshetra'}
                 label={<FormattedMessage id="gramAdarshTakta.padikKshetra" />}
               >
                 <Input maxLength={12} onKeyPress={KeyPressEvents.isInputNumber} />
@@ -907,7 +1415,6 @@ sendRequest(
                   { required: true, message: 'Government wasteland area is Required' },
                   { max: 12, message: 'Government wasteland area should be up to 12 characters' },
                 ]}
-               
               >
                 <Input
                   maxLength={12}
@@ -929,58 +1436,63 @@ sendRequest(
               >
                 <Input
                   value={villageSite}
-                  onChange={(e) => setVillageSite(e.target.value)}  
-                   maxLength={12} 
+                  onChange={(e) => setVillageSite(e.target.value)}
+                  maxLength={12}
                   onKeyPress={KeyPressEvents.isInputNumber}
                 />
               </Form.Item>
             </Col>
             <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
             <Col xl={4} lg={4} md={4} sm={8} xs={8}>
-  <Form.Item
-    rules={[
-      { required: true, message: 'Government wasteland area is Required' },
-      { max: 12, message: 'Government wasteland area should be upto 12 Characters' },
-    ]}
-    label={<FormattedMessage id="gramAdarshTakta.vanJaminKshetra" />}
-  >
-    <Input 
-      value={vanJaminArea}
-      onChange={(e) => setVanJaminArea(e.target.value)}
-      maxLength={12} 
-      onKeyPress={KeyPressEvents.isInputNumber} 
-    />
-  </Form.Item>
-</Col>  
-            <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
-
-            <Col xl={4} lg={4} md={4} sm={8} xs={8}>
               <Form.Item
                 rules={[
-                  { required: true, message: 'Area is Required' },
-                  { max: 12, message: 'Area should be upto 12 Characters' },
+                  { required: true, message: 'Government wasteland area is Required' },
+                  { max: 12, message: 'Government wasteland area should be upto 12 Characters' },
                 ]}
-                name={'kArea'}
-                label={<FormattedMessage id="gramAdarshTakta.kshetrfal" />}
+                label={<FormattedMessage id="gramAdarshTakta.vanJaminKshetra" />}
               >
-                <Input maxLength={12} onKeyPress={KeyPressEvents.isInputNumber} />
+                <Input
+                  value={vanJaminArea}
+                  onChange={(e) => setVanJaminArea(e.target.value)}
+                  maxLength={12}
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
-          </Row>
-          <Row>
+            <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
+
             <Col xl={4} lg={4} md={4} sm={8} xs={8}>
               <Form.Item
                 rules={[
                   { required: true, message: 'Area of ​​irrigated land is Required' },
                   { max: 12, message: 'Area of ​​irrigated land should be upto 12 Characters' },
                 ]}
-                name={'bagayatJaminKshetra'}
                 label={<FormattedMessage id="gramAdarshTakta.bagayatJaminKshetra" />}
               >
-                <Input maxLength={12} onKeyPress={KeyPressEvents.isInputNumber} />
+                <Input
+                  maxLength={12}
+                  value={bagayatArea}
+                  onChange={(e) => setBagayatArea(e.target.value)}
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
           </Row>
+          {/* kshetrafal */}
+          <Form
+            form={form}
+            name="akrushak_jamin_mahsul"
+            autoComplete="off"
+            style={{ marginBottom: 20 }}
+          >
+            <Table
+              columns={kshetrafalcolumns}
+              dataSource={akrushakdataSource}
+              pagination={false}
+              bordered
+              size="middle"
+            />
+          </Form>
           <Row>
             <Form>
               <Row>
@@ -1006,37 +1518,39 @@ sendRequest(
               </Row>
 
               {Khatedarlabels.map((label, index) => (
-        <Row key={index} style={{ marginTop: 8 }}>
-          <Col span={10}>{label}</Col>
-          <Col span={4}>
-            <Form.Item
-              // label={index === 0 ? "Khatedar Sankhya" : ""}
-              rules={[
-                { required: true, message: 'Khatedar Sankhya is required' },
-                { max: 12, message: 'Max 12 characters' },
-              ]}
-            >
-              <Input 
-                value={khatedarKshetra.entries[index].khatedarSankhya}
-                onChange={(e) => handleInputChange(index, 'khatedarSankhya', e.target.value)}
-                maxLength={12} 
-              />
-            </Form.Item>
-          </Col>
-          <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
-          <Col style={{ paddingLeft: '10' }} span={6}>
-            <Form.Item
-              // label={index === 0 ? "Kshetra" : ""}
-              rules={[{ required: true, message: 'Kshetra is required' }]}
-            >
-              <Input 
-                value={khatedarKshetra.entries[index].kshetra}
-                onChange={(e) => handleInputChange(index, 'kshetra', e.target.value)}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      ))}
+                <Row key={index} style={{ marginTop: 8 }}>
+                  <Col span={10}>{label}</Col>
+                  <Col span={4}>
+                    <Form.Item
+                      // label={index === 0 ? "Khatedar Sankhya" : ""}
+                      rules={[
+                        { required: true, message: 'Khatedar Sankhya is required' },
+                        { max: 12, message: 'Max 12 characters' },
+                      ]}
+                    >
+                      <Input
+                        value={khatedarKshetra.entries[index].khatedarSankhya}
+                        onChange={(e) =>
+                          handleInputChange(index, 'khatedarSankhya', e.target.value)
+                        }
+                        maxLength={12}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
+                  <Col style={{ paddingLeft: '10' }} span={6}>
+                    <Form.Item
+                      // label={index === 0 ? "Kshetra" : ""}
+                      rules={[{ required: true, message: 'Kshetra is required' }]}
+                    >
+                      <Input
+                        value={khatedarKshetra.entries[index].kshetra}
+                        onChange={(e) => handleInputChange(index, 'kshetra', e.target.value)}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              ))}
             </Form>
           </Row>
 
@@ -1048,15 +1562,22 @@ sendRequest(
               <Col span={8}>क्षेत्र (हेक्टर.आर)</Col>
             </Row>
 
-            {landTypes.map((item, index) => (
-              <Row gutter={16} key={item.key} style={{ marginBottom: 2 }}>
-                <Col span={8}>{item.label}</Col>
+            {landTypes.map((item) => (
+              <Row gutter={16} key={item.key} style={{ marginBottom: 8 }}>
+                <Col span={8}>
+                  <Typography.Text strong>{item.label}</Typography.Text>
+                </Col>
                 <Col span={8}>
                   <Form.Item
-                    name={[item.key, 'hectare']}
-                    rules={[{ required: true, message: 'हेक्टर आवश्यक आहे' }]}
+                    name={`land_${item.key}`}
+                    rules={[
+                      {
+                        required: true,
+                        message: `${item.label} क्षेत्र आवश्यक आहे`,
+                      },
+                    ]}
                   >
-                    <Input defaultValue={0} placeholder="क्षेत्र" />
+                    <InputNumber min={0} style={{ width: '100%' }} placeholder="हेक्टर" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -1067,7 +1588,7 @@ sendRequest(
           </h3>
           {/* <Title level={4} style={{ textAlign: 'center', marginBottom: '20px' }}>
       </Title> */}
-          <Form form={form} name="water_resources_table" autoComplete="off">
+          <Form form={jalsinchanForm} name="water_resources_table" autoComplete="off">
             <Table
               columns={waterResoursescolumns}
               dataSource={data}
@@ -1145,27 +1666,60 @@ sendRequest(
       title: '',
       content: (
         <>
-          <Row>
+          {/* <h4> लोकसंख्या </h4> */}
+
+          <Row gutter={[16, 16]}>
+            {/* Male Population */}
             <Col xl={4} lg={4} md={4} sm={8} xs={8}>
               <Form.Item
-                name="population"
-                label={
-                  <Space>
-                    <FormattedMessage id="gramAdarshTakta.population" />
-                    <Tooltip title="चालू केलेल्या जनगणणे अनुसार असलेली लोकसंख्या">
-                      <InfoCircleOutlined style={{ color: '#1890ff' }} />
-                    </Tooltip>
-                  </Space>
-                }
+                name="malePopulation"
+                label="पुरुषांची लोकसंख्या"
                 rules={[
-                  { required: true, message: 'Population is Required' },
-                  { max: 12, message: 'Population should be up to 12 characters' },
+                  { required: true, message: 'पुरुषांची लोकसंख्या आवश्यक आहे' },
+                  { max: 12, message: 'कमाल १२ अंक' },
                 ]}
               >
-                <Input maxLength={12} onKeyPress={KeyPressEvents.isInputNumber} />
+                <Input
+                  maxLength={12}
+                  value={population.male}
+                  onChange={(e) => setPopulation({ ...population, male: e.target.value })}
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
               </Form.Item>
             </Col>
-            <Col xl={1} lg={1} md={1} sm={1} xs={1}></Col>
+
+            {/* Female Population */}
+            <Col xl={4} lg={4} md={4} sm={8} xs={8}>
+              <Form.Item
+                name="femalePopulation"
+                label="स्त्रियांची लोकसंख्या"
+                rules={[
+                  { required: true, message: 'स्त्रियांची लोकसंख्या आवश्यक आहे' },
+                  { max: 12, message: 'कमाल १२ अंक' },
+                ]}
+              >
+                <Input
+                  maxLength={12}
+                  value={population.female}
+                  onChange={(e) => setPopulation({ ...population, female: e.target.value })}
+                  onKeyPress={KeyPressEvents.isInputNumber}
+                />
+              </Form.Item>
+            </Col>
+
+            {/* Total Population */}
+            <Col xl={4} lg={4} md={4} sm={8} xs={8}>
+              <Form.Item name="totalPopulation" label="एकूण लोकसंख्या">
+                <Input
+                  maxLength={12}
+                  value={population.total}
+                  readOnly
+                  style={{ background: '#f5f5f5' }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
             <Col xl={4} lg={4} md={4} sm={8} xs={8}>
               <Form.Item
                 rules={[
@@ -1193,7 +1747,7 @@ sendRequest(
             </Col>
           </Row>
 
-          <Form form={form} name="animal_count_form" autoComplete="off">
+          <Form form={formAnimal} name="animal_count_form" autoComplete="off">
             <Table
               columns={animalColumns}
               dataSource={animaldataSource}
@@ -1306,8 +1860,8 @@ sendRequest(
           </h3>
 
           <Form
-            form={form}
-            name="itar_jamin_mahsul"
+            form={resoursesForm}
+            name="water_supply_resources"
             autoComplete="off"
             style={{ marginBottom: 20 }}
           >
@@ -1320,9 +1874,23 @@ sendRequest(
             />
           </Form>
           <h3 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 8 }}>प्रमुख पिके </h3>
-          <Form form={form} name="land_crop_table" autoComplete="off">
-            <Table dataSource={dataSource} columns={columns} pagination={false} bordered />
-          </Form>
+       <Form
+  form={cropForm}
+  name="land_crop_table"
+  preserve={true}
+  initialValues={initialCropValues}
+  onFinish={handleSubmit}
+>
+  <Table
+    dataSource={dataSource}
+    columns={columns}
+    pagination={false}
+    bordered
+    rowKey="key"
+    style={{ marginBottom: 24 }}
+  />
+ 
+</Form>
         </>
       ),
     },
@@ -1581,7 +2149,7 @@ sendRequest(
                   { required: true, message: 'Sarpanch name is Required' },
                   { max: 50, message: 'Sarpanch name should be upto 50 Characters' },
                 ]}
-                name={'library'}
+                name={'sarpanch'}
                 label={<FormattedMessage id="gramAdarshTakta.Sarpanch" />}
               >
                 <Input maxLength={12} onKeyPress={KeyPressEvents.isInputChar} />
@@ -1650,7 +2218,7 @@ sendRequest(
             <Col xl={1} lg={1}></Col>
             <Col xl={5} lg={5} md={24} sm={24} xs={24}>
               <Form.Item label={<FormattedMessage id="villageSelector.label.village" />}>
-                <Select disabled placeholder={villageName}></Select>
+                <Select disabled placeholder={villageData[0].villageName}></Select>
               </Form.Item>
             </Col>
           </Row>
@@ -1690,9 +2258,7 @@ sendRequest(
                       type="primary"
                       loading={isLoading}
                       onClick={() => {
-                        if (servarthId) {
-                          saveForm15();
-                        }
+                        handleSubmit();
                       }}
                     >
                       <FormattedMessage id="formLanguage.button.save" />

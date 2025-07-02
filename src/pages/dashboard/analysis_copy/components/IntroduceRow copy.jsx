@@ -149,7 +149,7 @@ export const IntroduceRow = ({ loading, visitData }) => {
         okText: 'रद्द करा ',
 
         //cancelText: <FormattedMessage id="formLanguage.form.no" />,
-        title: 'ई-चावडी माहिती',
+        title: 'इ-चावडी माहिती',
         content: 'सदर अहवालसाठी आपण पात्र नाही',
         onCancel() {},
       });

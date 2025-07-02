@@ -21,7 +21,7 @@ function GramAdarshTakta() {
   const backToHomeButton = () => {
     history.push({ pathname: '/homepage' });
   };
-  const { districtName, talukaName, districtCode, talukaCode } = useModel('details');
+  const { districtName, talukaName, districtCode, talukaCode,villageData } = useModel('details');
   const [textVillage, setTextVillage] = useState();
   const [codeVillage, setCodeVillage] = useState('');
   const [village, setVillage] = useState([]);
@@ -81,7 +81,10 @@ function GramAdarshTakta() {
   };
 
   useEffect(() => {
-    setData(Maindata);
+    // console.log(villageData[0].cCode, "villageData[0].cCode");
+    setCodeVillage(villageData[0].cCode)
+    ;
+    getDataForForm4()
     getRevenueYear();
   }, []);
 
@@ -111,32 +114,16 @@ function GramAdarshTakta() {
 
   const getDataForForm4 = async () => {
     sendRequest(
-      `${URLS.BaseURL}/reports/getForm4GhoshwaraReport?revenueYear=${revenueYear}&cCode=${codeVillage}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getAllGramAdarshTakaDataBycCode/${villageData[0].cCode}`,
       'GET',
       null,
       (r) => {
-        // console.log('responase for table==>', r.data);
-        setSthanikUpkar(r.data.form17Data[0].ekunSthanikUpkar);
-        setJaminMahsul(r.data.form17Data[0].jaminMahsul);
-        setSthanikUpkarAslela(r.data.form17Data[0].sthanikUpkarAslela);
-        setSthanikUpkarNaslela(r.data.form17Data[0].sthanikUpkarNaslela);
-        setEkunJaminMahsul(r.data.form17Data[0].ekunJaminMahsul);
-        setVasuli(r.data.form17Data[0].vasuli);
-        setShillakh(r.data.form17Data[0].shillak);
+        setData(r.data[0])
+      console.log(r.data[0],"dataaaaaaaaaaaaaaaaaaaaaa")
 
-        setVillageForm4Abstract(
-          r.data.form17Data.map((r) => ({
-            srNo: r.id,
-            ekunSthanikUpkar: r.ekunSthanikUpkar,
-            ekunJaminMahsul: r.ekunJaminMahsul,
-            jaminMahsul: r.jaminMahsul,
-            sthanikUpkarAslela: r.sthanikUpkarAslela,
-            sthanikUpkarNaslela: r.sthanikUpkarNaslela,
-            shillak: r.shillak,
-            vasuli: r.vasuli,
-          })),
-        );
+        
         message.success('Records Fetched!!');
+        console.log(data,"check dataaaaaaaaaaaaaaaaaaaaaaa")
       },
     );
   };
@@ -187,7 +174,6 @@ function GramAdarshTakta() {
         <Button
           onClick={() => {
             if (textVillage && revenueYear) {
-              getDataForForm4();
             } else if (textVillage == null) {
               message.info('Please Select Village');
             } else if (revenueYear == null) {
@@ -484,7 +470,7 @@ class ComponentToPrint extends React.Component {
                 <tr>
                   <td>
                     <b>
-                      <span>15. क्रीडांगणाखालील क्षेत्र </span>
+                      <span>16. क्रीडांगणाखालील क्षेत्र </span>
                     </b>
                   </td>
 
@@ -495,7 +481,7 @@ class ComponentToPrint extends React.Component {
                 <tr>
                   <td>
                     <b>
-                      <span>15. कुरणाचे क्षेत्र</span>
+                      <span>17. महसुलमाफ किंवा विशेषरित्या कमआकारी जमिनीचे क्षेत्र</span>
                     </b>
                   </td>
 
@@ -503,6 +489,376 @@ class ComponentToPrint extends React.Component {
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
+                <tr>
+                  <td>
+                    <b>
+                      <span>18.<FormattedMessage id="gramAdarshTakta.encroachment" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+     
+                <tr>
+                  <td>
+                    <b>
+                      <span>19.<FormattedMessage id="gramAdarshTakta.pramukhPike" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                <tr>
+                  <td>
+                    <b>
+                      <span>20.<FormattedMessage id="gramAdarshTakta.TotalJaminMahsul" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                           <tr>
+                  <td>
+                    <b>
+                      <span>21.<FormattedMessage id="gramAdarshTakta.akrushakAkarniMagnichi" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                           <tr>
+                  <td>
+                    <b>
+                      <span>22.<FormattedMessage id="gramAdarshTakta.etarMahsulMagani" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                           <tr>
+                  <td>
+                    <b>
+                      <span>23.<FormattedMessage id="gramAdarshTakta.rainfall" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                           <tr>
+                  <td>
+                    <b>
+                      <span>24.पाणी पुरवठ्याची साधने (Water Supply Resources) </span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                <tr>
+  <td>
+    <b>25. <FormattedMessage id="gramAdarshTakta.irrigationWells" />
+</b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >वापरात असलेल्या विहीरिंची संख्या   - </td>
+          <td>{this.props.data.craftaman}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>वापरात नसलेल्या विहीरिंची संख्या   - </td>
+          <td>{this.props.data.craftaman}</td>
+        </tr>
+   
+      </tbody>
+    </table>
+  </td>
+</tr>
+
+    <tr>
+                  <td>
+                    <b>
+                      <span>26.<FormattedMessage id="gramAdarshTakta.bagayatJaminKshetra" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+    <tr>
+                  <td>
+                    <b>
+                      <span>27.<FormattedMessage id="gramAdarshTakta.IrrigationequipmentAndArea" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+
+ <tr>
+  <td>
+    <b>28. <FormattedMessage id="gramAdarshTakta.domesticAnimal" />
+</b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >शिंग असलेली  - </td>
+          <td>{this.props.data.craftaman}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>शिंग नसलेली   - </td>
+          <td>{this.props.data.craftaman}</td>
+        </tr>
+   
+      </tbody>
+    </table>
+  </td>
+</tr>
+
+    <tr>
+  <td colSpan={4} style={{fontWeight:'bold'}} className="fw-bold text-center">
+    29.सार्वजनिक आणि सहकारी संस्था 
+  </td>
+</tr>
+
+   <tr>
+                  <td>
+                    <b>
+                      <span>29-(A) . <FormattedMessage id="gramAdarshTakta.grampanchayat" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (B) . <FormattedMessage id="gramAdarshTakta.panchayatSamiti" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (C) . <FormattedMessage id="gramAdarshTakta.nyaypanchyayct" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (D) . <FormattedMessage id="gramAdarshTakta.policeStation" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (E) . <FormattedMessage id="gramAdarshTakta.postOffice" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (F) . <FormattedMessage id="gramAdarshTakta.primarySchool" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (G) . <FormattedMessage id="gramAdarshTakta.secondarySchool" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (H) . <FormattedMessage id="gramAdarshTakta.madhyamikSchool" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (H) . <FormattedMessage id="gramAdarshTakta.college" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (I) . <FormattedMessage id="gramAdarshTakta.hospitals" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (J) . <FormattedMessage id="gramAdarshTakta.transportations" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (K) . <FormattedMessage id="gramAdarshTakta.GovOrg" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (L) . <FormattedMessage id="gramAdarshTakta.CooperativeFactories" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (M) . <FormattedMessage id="gramAdarshTakta.NearestRailwayStationandDistance" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+                  <td>
+                    <b>
+                      <span>  (N) . <FormattedMessage id="gramAdarshTakta.eSevakendra" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+                 <tr><td>
+                   
+                  </td></tr>
+   <tr>
+   
+                  <td>
+                    <b>
+                      <span> 30 . <FormattedMessage id="gramAdarshTakta.rashanshop" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+   
+                  <td>
+                    <b>
+                      <span> 31 . <FormattedMessage id="gramAdarshTakta.Sarpanch" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+   
+                  <td>
+                    <b>
+                      <span> 31 . <FormattedMessage id="gramAdarshTakta.PolicePatil" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+   <tr>
+   
+                  <td>
+                    <b>
+                      <span> 31 . <FormattedMessage id="gramAdarshTakta.kotval" /></span>
+                    </b>
+                  </td>
+
+                  <td>{this.props.data.kurancheKshetra}</td>
+                  {/* <td>{}</td>
+                  <td>{}</td> */}
+                </tr>
+
               </tbody>
             </table>
           </Card>
