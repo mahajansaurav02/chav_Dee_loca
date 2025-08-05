@@ -42,6 +42,8 @@ const Login = () => {
   const [modalHelp, setModalHelp] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalForDelete, setModalForDelete] = useState(false);
+  const [useDetails, setuseDetails] = useState(null);
+  const [aToken, setAToken] = useState('');
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -70,136 +72,156 @@ const Login = () => {
     setIsModalVisible(false);
   };
 
-  const handleSubmit = async (values) => {
-    // console.log('API encrypted password', encrypted);
+ const handleSubmit = async (values) => {
+  let user_captcha_value = document.getElementById('user_captcha_input').value;
+  let loginStatus;
 
-    let user_captcha_value = document.getElementById('user_captcha_input').value;
-
-    // if (validateCaptcha(user_captcha_value) == true) {
-    //   alert('Captcha Matched');
-    // } else {
-    //   alert('Captcha Does Not Match');
-    // }
-
-    enterLoading(2);
-    // setButtonLoadingState(true);
+  try {
+    enterLoading(2); // Start loading
+    
     const article = {
       servarthId: username,
       password: encrypted.toString(),
     };
- 
-    let loginStatus;
-    await Axios.post(`${URLS.AuthURL}/authenticateUserByUsernameAndPassword`, article)
-      .then((res) => {
-        let testStatus = res.status;
-        // console.log(testStatus);
-        if (testStatus === 200 && validateCaptcha(user_captcha_value) == true) {
-          loginStatus = 'ok';
-          // alert('Captcha Matched');
 
-          details(
-            res.data.challanHeads,
-            res.data.servarthId,
-            res.data.districtCode,
-            res.data.districtName,
-            res.data.talukaCode,
-            res.data.talukaName,
-            res.data.marathiName,
-            res.data.desg,
-            res.data.echDbName,
-            res.data.echSchemaName,
-            res.data.mhrDbName,
-            res.data.mhrSchemaName,
-            res.data.echHost,
-            res.data.mhrHost,
-            res.data.villages,
-            res.data.revenueYear,
-            res.data.roles,
-            res.data.niranks,
-          );
+    const res = await Axios.post(
+      `${URLS.AuthURL}/authenticateUserByUsernameAndPassword`, 
+      article
+    );
 
-          authLogin(res.data.token, 3600000);
-          reload();
-        } else {
-          alert('Captcha Does Not Match');
-        }
-      })
-      .catch((err) => {
-        if (login_attempts == 0) {
-          alert('No Login Attempts Available');
-        } else {
-          login_attempts = login_attempts - 1;
-          alert('Login Failed Now Only ' + login_attempts + ' Login Attempts Available');
-          if (login_attempts == 0) {
-            document.getElementById('username1').disabled = true;
-            document.getElementById('password1').disabled = true;
-            document.getElementById('btnbtn').disabled = true;
-          }
-        }
-        return false;
-        // console.log('err', err);
-        // setModalForDelete(true);
-      });
+    if (res.status === 200 && validateCaptcha(user_captcha_value) ){
+      loginStatus = 'ok';
+      
+      // Process successful login
+      details(
+        res.data.challanHeads,
+        res.data.servarthId,
+        res.data.districtCode,
+        res.data.districtName,
+        res.data.talukaCode,
+        res.data.talukaName,
+        res.data.marathiName,
+        res.data.desg,
+        res.data.echDbName,
+        res.data.echSchemaName,
+        res.data.mhrDbName,
+        res.data.mhrSchemaName,
+        res.data.echHost,
+        res.data.mhrHost,
+        res.data.villages,
+        res.data.revenueYear,
+        res.data.roles,
+        res.data.niranks,
+      );
 
-    try {
-      // Login
+      const userDetails = {
+        challanHeads: res.data.challanHeads,
+        servarthId: res.data.servarthId,
+        districtCode: res.data.districtCode,
+        districtName: res.data.districtName,
+        talukaCode: res.data.talukaCode,
+        talukaName: res.data.talukaName,
+        marathiName: res.data.marathiName,
+        desg: res.data.desg,
+        echDbName: res.data.echDbName,
+        echSchemaName: res.data.echSchemaName,
+        mhrDbName: res.data.mhrDbName,
+        mhrSchemaName: res.data.mhrSchemaName,
+        echHost: res.data.echHost,
+        mhrHost: res.data.mhrHost,
+        villages: res.data.villages,
+        revenueYear: res.data.revenueYear,
+        roles: res.data.roles,
+        niranks: res.data.niranks,
+      };
+
+      setuseDetails(userDetails);
+      setAToken(res.data.token);
+      localStorage.setItem('redirectUserDetails', JSON.stringify(userDetails));
+      authLogin(res.data.token, 3600000);
+
+      // Login message handling
       const msg = await login({ ...values, type });
-      // console.log(loginStatus + '<----Login--msg.status------>' + msg.status);
+      
       if (loginStatus !== null && msg.status === loginStatus) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: 'Login Successful',
         });
+        
         let ROLES = JSON.parse(localStorage.getItem('roles'));
-        console.log(ROLES[0], '---------ROLES');
-        // let ROLES = 'ROLE_TEHSILDAR';
-        // console.log(ROLES, '---------ROLES');
-
+        
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
-        /** This method will jump to the location of the redirect parameter */
+        
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query;
-        //history.push(redirect || '/dashboard/analysis');
+        
+        // Role-based redirection
         if (ROLES[0] === 'ROLE_COLLECTOR') {
-          //if (ROLES === 'ROLE_COLLECTOR') {
-          // history.push(redirect || '/homepage');
           history.push(redirect || '/dashboard/analysis');
         } else if (ROLES[0] === 'ROLE_DYSLR') {
           history.push(redirect || '/homepageDYSLR');
         } else if (ROLES[0] === 'ROLE_TEHSILDAR') {
-          // else if (ROLES === 'ROLE_TEHSILDAR') {
-          //alert('TEHSILDAR');
           history.push(redirect || '/dashboard/analysis_copy');
-        } else if( ROLES[0] === 'ROLE_SDO'|| ROLES[0] === 'ROLE_COLLECTOR' || ROLES[0] === 'ROLE_DEPUTY_COLLECTOR' || ROLES[0] === 'ROLE_ACOL' || ROLES[0] === 'ROLE_CIRCLE_OFFICER' || ROLES[0] === 'ROLE_TAHSILDAR' || ROLES[0] === 'ROLE_NTAH') {
-  window.location.href = redirect || 'http://localhost:9091/#/dashboard';
-        }
-        else {
-          // history.push(redirect || '/homepage');
+        } else if ([
+          'ROLE_SDO',
+          'ROLE_COLLECTOR',
+          'ROLE_DEPUTY_COLLECTOR',
+          'ROLE_ACOL',
+          'ROLE_CIRCLE_OFFICER',
+          'ROLE_TAHSILDAR',
+          'ROLE_NTAH'
+        ].includes(ROLES[0])) {
+          const redirectUrl = `http://localhost:9091/#/dashboard?data=${aToken}`;
+          window.location.href = redirectUrl;
+        } else {
           history.push(redirect || '/homepageThalati');
         }
-        return;
       } else {
-        const defaultLoginFailureMessage = intl.formatMessage({
-          id: 'pages.login.failure',
-          defaultMessage: 'Login failed, please try again!',
-        });
-        message.error(defaultLoginFailureMessage);  
+        throw new Error('Login status mismatch');
       }
-      // console.log(msg); //If it fails to set user error message
-
-      setUserLoginState(msg);
-    } catch (error) {
-      // console.log(error);
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: 'Login failed, please try again!',
-      });
-      message.error(defaultLoginFailureMessage);
+    } else {
+      alert('Captcha Does Not Match');
+      throw new Error('Captcha validation failed');
     }
-  };
+  } catch (error) {
+    console.error('Login error:', error);
+    
+    // Handle login attempts
+    if (login_attempts == 0) {
+      alert('No Login Attempts Available');
+    } else {
+      login_attempts = login_attempts - 1;
+      alert(`Login Failed. Now Only ${login_attempts} Login Attempts Available`);
+      if (login_attempts == 0) {
+        document.getElementById('username1').disabled = true;
+        document.getElementById('password1').disabled = true;
+        document.getElementById('btnbtn').disabled = true;
+      }
+    }
+    
+    const defaultLoginFailureMessage = intl.formatMessage({
+      id: 'pages.login.failure',
+      defaultMessage: 'Login failed, please try again!',
+    });
+    message.error(defaultLoginFailureMessage);
+    
+    throw error; // Re-throw to be caught by button's onClick
+  } finally {
+    // Always clear loading state
+    setLoadings(prevLoadings => {
+      const newLoadings = [...prevLoadings];
+      newLoadings[2] = false;
+      return newLoadings;
+    });
+  }
+};
 
+  useEffect(() => {
+    console.log(useDetails, 'usercheckkkkkkDetails==================');
+  }, [useDetails]); // This will run whenever useDetails changes
   const [loadings, setLoadings] = useState([]);
 
   const enterLoading = (index) => {
@@ -289,10 +311,9 @@ const Login = () => {
   //     alert('Captcha Does Not Match');
   //   }
   // };
- const handleClick = () => {
+  const handleClick = () => {
     history.push('/dashboard/collectorMis');
   };
-
 
   return (
     <div className="loginscreen">
@@ -303,7 +324,9 @@ const Login = () => {
           <h3 style={{ color: 'blueviolet' }}>
             {/*  मागणी निश्चिती केल्यावर पण काही दुरुस्ती बाकी असल्यास खातेदारांची मागणी दुरुस्तीची
             सुविधा देण्यात आलेली आहे. */}
-            गाव नमुना निरंक आणि गाव नमुना कामकाज पूर्ण निवडण्याचा पर्याय सुविधा देण्यात आली आहे. इ-चावडी मधील MIS बघण्यासाठी User id/pw ची आवश्यकता नाही. ई चावडी MIS बघण्यासाठी वरील  लिंकवर क्लिक करा.
+            गाव नमुना निरंक आणि गाव नमुना कामकाज पूर्ण निवडण्याचा पर्याय सुविधा देण्यात आली आहे.
+            इ-चावडी मधील MIS बघण्यासाठी User id/pw ची आवश्यकता नाही. ई चावडी MIS बघण्यासाठी वरील
+            लिंकवर क्लिक करा.
           </h3>
         </marquee>
 
@@ -320,22 +343,25 @@ const Login = () => {
       </div>
 
       <div className="rightSide">
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-   <Button
-  type="primary"
-  className="go-to-mis-button"
-  onClick={handleClick}
->
-  <ArrowRightOutlined style={{ marginRight: '8px', fontSize: '16px' }} />
-  <FormattedMessage id="login.gotoMis" />
-  <img src="/new.gif" alt="New" className="new-gif" />
-</Button>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '10px',
+            marginBottom: '10px',
+          }}
+        >
+          <Button type="primary" className="go-to-mis-button" onClick={handleClick}>
+            <ArrowRightOutlined style={{ marginRight: '8px', fontSize: '16px' }} />
+            <FormattedMessage id="login.gotoMis" />
+            <img src="/new.gif" alt="New" className="new-gif" />
+          </Button>
 
-
-    <div className="translator" data-lang>
-      {SelectLang && <SelectLang className="trans" />}
-    </div>
-  </div>
+          <div className="translator" data-lang>
+            {SelectLang && <SelectLang className="trans" />}
+          </div>
+        </div>
         <div className="loginForm" id="loginForm1">
           {/* <img className="firstAugustImage" src={FirstAugustTitle} /> */}
           <h1>
@@ -419,27 +445,34 @@ const Login = () => {
             <FormattedMessage id="pages.login.button.final" />
           </Button> */}
 
-          <Button
-            id="btnbtn"
-            className="loginbttn"
-            loading={loadings[2]}
-            type="primary"
-            onClick={async () => {
-              if (!username && !password) {
-                document.getElementById('empty-username').style.opacity = '1';
-                document.getElementById('empty-pass').style.opacity = '1';
-              } else if (!username) {
-                document.getElementById('empty-username').style.opacity = '1';
-              } else if (!password) {
-                document.getElementById('empty-pass').style.opacity = '1';
-              } else {
-                await handleSubmit();
-                // doSubmit();
-              }
-            }}
-          >
-            <FormattedMessage id="pages.login.button.final" />
-          </Button>
+         <Button
+  id="btnbtn"
+  className="loginbttn"
+  loading={loadings[2]}
+  type="primary"
+  onClick={async () => {
+    if (!username && !password) {
+      document.getElementById('empty-username').style.opacity = '1';
+      document.getElementById('empty-pass').style.opacity = '1';
+    } else if (!username) {
+      document.getElementById('empty-username').style.opacity = '1';
+    } else if (!password) {
+      document.getElementById('empty-pass').style.opacity = '1';
+    } else {
+      try {
+        await handleSubmit();
+      } catch (error) {
+        setLoadings(prevLoadings => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[2] = false;
+          return newLoadings;
+        });
+      }
+    }
+  }}
+>
+  <FormattedMessage id="pages.login.button.final" />
+</Button>
 
           {/* <a
             href="https://drive.google.com/u/0/uc?id=1AodMBTimjwcisfdNsPprClpk5ViMOJFr&export=download"

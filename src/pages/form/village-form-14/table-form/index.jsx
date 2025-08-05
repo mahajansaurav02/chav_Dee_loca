@@ -374,7 +374,7 @@ function TableForm14() {
         />
         <Row>
           <Col xl={11} lg={11} md={11} sm={24} xs={24}>
-            {isNirank1 == false && (
+            {isNirank1 == true && (
               <Button
                 type="primary"
                 onClick={() => {

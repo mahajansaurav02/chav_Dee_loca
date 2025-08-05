@@ -92,6 +92,7 @@ function HomePage(props) {
     paperRadius: {
       borderRadius: 10,
       marginTop: 20,
+      textAlign: 'center',
     },
 
     button1: {
@@ -263,7 +264,11 @@ function HomePage(props) {
       'GET',
       null,
       (res) => {
-        setTargetData(res.data.talathiDashBoardData[0].annualVillageTarget);
+      console.log(res.data,"target data");
+        if(res.data){
+             setTargetData(res.data.talathiDashBoardData[0].annualVillageTarget);
+        }
+     
       },
     );
   };
@@ -366,7 +371,8 @@ function HomePage(props) {
           style={{
             padding: 10,
             height: '163vh',
-            width: 1000,
+            // smcg change width
+            width: 1498,  
             margin: '20px auto',
           }}
         >
@@ -646,7 +652,7 @@ function HomePage(props) {
             style={{
               padding: 10,
               // height: '68vh',
-              width: 910,
+              width: 1200,
               margin: '20px auto',
             }}
           >
@@ -673,7 +679,7 @@ function HomePage(props) {
                     </Box>
                     <Row>
                       <Col xl={24} lg={24} md={18} sm={18} xs={18}>
-                        <h3 style={{ padding: '5px' }}>
+                        <h3 style={{ padding: '5px', textAlign:'center' }}>
                           <b>मागणी निश्चित केलेली खातेदार संख्या</b>
                         </h3>
                         <center>
@@ -944,7 +950,7 @@ function HomePage(props) {
             style={{
               padding: 10,
               height: '61vh',
-              width: 900,
+              width: 1200,
               margin: '20px auto',
             }}
           >
@@ -1214,7 +1220,7 @@ function HomePage(props) {
                           },
                         },
                         title: {
-                          text: 'Against जमाबंदी',
+                          text: 'Against उद्दिष्टे',
                         },
                         colors: ['#33FF99', '#f00'],
                       }}
@@ -1266,76 +1272,7 @@ function HomePage(props) {
             </Grid>
           </Card>
         </Card>
-        <FormProvider /* {...methods} */>
-          <form>
-            <div className="demo-wrap">
-              <Paper
-                // className="echawdiLogo"
-                elevation={10}
-                style={{
-                  padding: 20,
-                  height: '163vh',
-                  width: 300,
-                  margin: '20px auto',
-                }}
-              >
-                <Button
-                  onClick={handleOnChange}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  संकीर्ण महसूल
-                </Button>
-                <Button
-                  style={{ marginTop: '35px' }}
-                  onClick={handleOnChangeForOTE}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  थकबाकी भरणे
-                </Button>
-                <Button
-                  style={{ marginTop: '35px' }}
-                  onClick={handleOnChangeForDemand}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  मागणी तपशील
-                </Button>
-                <Button
-                  style={{ marginTop: '35px' }}
-                  onClick={handleOnChangeReceipts}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  पावती तयार करा
-                </Button>
-                <Button
-                  style={{ marginTop: '35px' }}
-                  onClick={handleOnChangeForChallanGeneration}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  चलन तयार करा
-                </Button>
-                <Button
-                  style={{ marginTop: '35px' }}
-                  onClick={handleOnChangeForReceiptReport}
-                  className={classes.button1}
-                  variant="contained"
-                  size="large"
-                >
-                  पावत्या पहा
-                </Button>
-              </Paper>
-            </div>
-          </form>
-        </FormProvider>
+      
       </Box>
       {/* <Box
         sx={{

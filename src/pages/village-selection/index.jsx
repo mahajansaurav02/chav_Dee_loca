@@ -11,7 +11,7 @@ function villageSelection(props) {
   const [village, setVillage] = useState([]);
   const [codeVillage, setCodeVillage] = useState();
   const [textForVillage, setTextForVillage] = useState();
-  const [revenueYear1, setRevenueYear1] = useState('2024-25');
+  const [revenueYear1, setRevenueYear1] = useState('2025-26');
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
   const [form] = Form.useForm();
   let history = useHistory();
@@ -49,6 +49,7 @@ function villageSelection(props) {
   const handleOnChange = (value, event) => {
     setCodeVillage(value);
     setTextForVillage(event.label);
+    
     //localStorage.setItem('LGD_Code',event.lgdcode)
     //  setNirank(value);
     // props.setCodeVillage(value);
@@ -71,6 +72,7 @@ function villageSelection(props) {
         villageName: textForVillage,
       },
     ];
+    localStorage.setItem('selectedvillage', codeVillage);
     // console.log('myArray', myArray);
     localStorage.setItem('villageData1', JSON.stringify(myArray));
     // localStorage.setItem('villageLabel', JSON.stringify(textForVillage));

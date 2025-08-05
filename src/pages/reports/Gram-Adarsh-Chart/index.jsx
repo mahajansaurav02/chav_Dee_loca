@@ -28,7 +28,7 @@ function GramAdarshTakta() {
   const [tableData, setTableData] = useState();
   const [isNirank, setIsNirank] = useState(false);
   const [villageForm4Abstract, setVillageForm4Abstract] = useState();
-  const [revenueYear, setRevenueYear] = useState('2024-25');
+  const [revenueYear, setRevenueYear] = useState('2025-26');
   const [sthanikUpkar, setSthanikUpkar] = useState();
   const [jaminMahsul, setJaminMahsul] = useState();
   const [ekunJaminMahsul, setEkunJaminMahsul] = useState();
@@ -39,6 +39,7 @@ function GramAdarshTakta() {
   const componentRef = useRef();
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
   const [data, setData] = useState({});
+  const VillageCCodeL = localStorage.getItem('selectedvillage');
 
   const Maindata = {
     year: '2024-25',
@@ -84,7 +85,7 @@ function GramAdarshTakta() {
     // console.log(villageData[0].cCode, "villageData[0].cCode");
     setCodeVillage(villageData[0].cCode)
     ;
-    getDataForForm4()
+    // getDataForForm4()
     getRevenueYear();
   }, []);
 
@@ -112,21 +113,49 @@ function GramAdarshTakta() {
     });
   };
 
-  const getDataForForm4 = async () => {
-    sendRequest(
-      `${URLS.BaseURL}/gramAdarshTakta/getAllGramAdarshTakaDataBycCode/${villageData[0].cCode}`,
-      'GET',
-      null,
-      (r) => {
-        setData(r.data[0])
-      console.log(r.data[0],"dataaaaaaaaaaaaaaaaaaaaaa")
+  
 
-        
-        message.success('Records Fetched!!');
-        console.log(data,"check dataaaaaaaaaaaaaaaaaaaaaaa")
-      },
-    );
+  const getDataForForm4 = async () => {
+    if (!VillageCCodeL) {
+      message.info('Please Select Village');
+      return;
+    }
+    // if (!revenueYear) {
+    //   message.info('Please Select Revenue Year');
+    //   return;
+    // }
+
+    // setLoading(true);
+    try {
+      sendRequest(
+        `${URLS.BaseURL}/gramAdarshTakta/getAllGramAdarshTakaDataBycCode/${VillageCCodeL}`,
+        "GET",
+        null,
+        (response) => {
+          const formData = response?.data?.[0];
+          if (formData) {
+            setData(formData);
+            message.success("Records Fetched!");
+          } else {
+            message.warning("No data found.");
+            setData(null);
+          }
+        },
+        (error) => {
+          console.error("Failed to fetch data:", error);
+          message.error("Failed to fetch records.");
+          setData(null);
+        }
+      );
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("An error occurred while fetching data");
+      setData(null);
+    } finally {
+      // setLoading(false);
+    }
   };
+
 
   return (
     <div>
@@ -174,12 +203,15 @@ function GramAdarshTakta() {
         <Button
           onClick={() => {
             if (textVillage && revenueYear) {
+              console.log(data,"chhhhhhhhh")
             } else if (textVillage == null) {
               message.info('Please Select Village');
             } else if (revenueYear == null) {
               message.info('Please Select Revenue Year');
             }
+            getDataForForm4()
           }}
+          
           type="primary"
         >
           <FormattedMessage id="formLanguage.form.getData" />
@@ -198,7 +230,7 @@ function GramAdarshTakta() {
         sthanikUpkarNaslela={sthanikUpkarNaslela}
         vasuli={vasuli}
         shillakh={shillakh}
-        data={Maindata}
+        data={data}
       />
     </div>
   );
@@ -241,28 +273,7 @@ class ComponentToPrint extends React.Component {
                     </h4>
                   </th>
                 </tr>
-                <tr>
-                  <td>Hiii</td>
-                  {/*   <td>
-                    <b>
-                      <FormattedMessage id="form1abstract.area" />
-                      <br />
-                      (हे.आर.चौमी)
-                    </b>
-                  </td> */}
-                  <td>
-                    <b>
-                      <FormattedMessage id="form1abstract.assessment" />
-                      <br />
-                      (रु.पैसे)
-                    </b>
-                  </td>
-                  {/* <td>
-                    <b>
-                      <FormattedMessage id="form1abstract.remarks" />
-                    </b>
-                  </td> */}
-                </tr>
+             
               </thead>
               <tbody>
                 <tr>
@@ -271,7 +282,7 @@ class ComponentToPrint extends React.Component {
                       <span>1. वर्ष</span>
                     </b>
                   </td>
-                  <td>{this.props.data.year}</td>
+                  <td>{this.props.data.revenueYear || ' '}</td>
                   {/* <td>{this.props.tenureAssessment}</td> */}
                   {/* <td></td> */}
                 </tr>
@@ -281,7 +292,7 @@ class ComponentToPrint extends React.Component {
                       <span>2. क्षेत्र (चौ. कि. मी. मध्ये)</span>
                     </b>
                   </td>
-                  <td>{this.props.data.kshetra}</td>
+                  <td>{this.props.data.villageTotalArea}</td>
                 </tr>
                 <tr>
                   <td>
@@ -291,7 +302,7 @@ class ComponentToPrint extends React.Component {
 
                     <br />
                   </td>
-                  <td>{this.props.data.population}</td>
+                  <td>{this.props.data.villagePopulation || ' '}</td>
                   {/* <td>{this.props.tenureAssessment}</td> */}
                   {/* <td></td> */}
                 </tr>
@@ -311,13 +322,13 @@ class ComponentToPrint extends React.Component {
 {/* Row for below 223 */}
 <tr>
   <td>2.023 हेक्टर पेक्षा जास्त </td>
-  <td>संख्या {this.props.data.GreaterThan2023No}<br/>क्षेत्र  {this.props.data.GreaterThan2023Area}</td>
+  <td>संख्या {this.props.data.khataCountAbove2023 || '-'}<br/>क्षेत्र  {this.props.data.khatedarBhogwataAreaGrater || ' '}</td>
 </tr>
 
 {/* Row for above 223 */}
 <tr>
   <td>2.023 हेक्टर पेक्षा कमी </td>
-  <td>संख्या {this.props.data.lessThan2023No}<br/>क्षेत्र  {this.props.data.lessThan2023Area}</td>
+  <td>संख्या {this.props.data.khataCountBelow2023 || '-'}<br/>क्षेत्र  {this.props.data.khatedarBhogwataAreaLess || ' '}</td>
 </tr>
 
                 
@@ -327,7 +338,7 @@ class ComponentToPrint extends React.Component {
                       <span>5. भूमिहीन शेत मजुरांची संख्या</span>
                     </b>
                   </td>
-                  <td>{this.props.data.bhumihinShetmajur}</td>
+                  <td>{this.props.data.landlessFarmLaborers || ' '}</td>
                   {/* <td>{this.props.tenure4Assessment}</td>
                   <td>{}</td> */}
                 </tr>
@@ -337,7 +348,7 @@ class ComponentToPrint extends React.Component {
       <span>6. कारागिरांची संख्या</span>
     </b>
   </td>
-  <td>{this.props.data.craftaman}</td>
+  <td>{this.props.data.numberOfArtisans || ' '}</td>
 </tr>
 
 <tr>
@@ -350,15 +361,15 @@ class ComponentToPrint extends React.Component {
       <tbody>
         <tr> 
           <td style={{fontWeight:'bold'}} >बिंदुमाला - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.bindumalaArea || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>दुमाला - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.dumalaArea || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>एकूण - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.bindumalaDumalaTotalArea || ' '}</td>
         </tr>
       </tbody>
     </table>
@@ -375,15 +386,15 @@ class ComponentToPrint extends React.Component {
       <tbody>
         <tr> 
           <td style={{fontWeight:'bold'}} >खरीप  - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.kharipArea || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>रब्बी  - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.rabbiArea || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>एकूण - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.kharipRabbiTotalArea || ' '}</td>
         </tr>
       </tbody>
     </table>
@@ -397,7 +408,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.akrushakLand}</td>
+                  <td>{this.props.data.akrushik || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -408,7 +419,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.sarkariPaditLand}</td>
+                  <td>{this.props.data.govPadikLandArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -419,7 +430,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.padikLand}</td>
+                  <td>{this.props.data.padikLandArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -430,7 +441,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.potkharabLand}</td>
+                  <td>{this.props.data.potkharabaArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -441,7 +452,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.gavthanacheKshetra}</td>
+                  <td>{this.props.data.gavthanArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -452,7 +463,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.vanjaminKshetra}</td>
+                  <td>{this.props.data.forestLandArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -463,7 +474,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.kuranArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -474,7 +485,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.plargroundArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -485,7 +496,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.mahsulmafOrKamakariLandArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -496,7 +507,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.areaUnderEncroachment || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -508,43 +519,145 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.kurancheKshetra || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
-                <tr>
-                  <td>
-                    <b>
-                      <span>20.<FormattedMessage id="gramAdarshTakta.TotalJaminMahsul" /></span>
-                    </b>
-                  </td>
+                
+ <tr></tr>                <tr>
+                  
+  <td colSpan={4} style={{fontWeight:'bold'}} className="fw-bold text-center">
+   <span>20.<FormattedMessage id="gramAdarshTakta.TotalJaminMahsul" /></span>
+  </td>
+</tr>
+<tr>
+  <td>
+    <b>अ) चालू वर्षी केलेली वसूली </b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >नियत  - </td>
+          <td>{this.props.data.agriTotalNiyatDemand || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>संकीर्ण  - </td>
+          <td>{this.props.data.agriTotalSankirnDemand || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>एकूण - </td>
+          <td>{this.props.data.agriTotalDemand || ' '}</td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td>
+    <b> ब) मागील वर्षी केलेली वसूली </b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >नियत  - </td>
+          <td>{this.props.data.agriTotalNiyatDemandPrevious || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>संकीर्ण  - </td>
+          <td>{this.props.data.agriTotalSankirnDemandPrevious || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>एकूण - </td>
+          <td>{this.props.data.agriTotalDemandPrevious || ' '}</td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+ <tr><td>
+                   
+                  </td></tr>
+              
+ <tr>
+  <td>
+    <b><span>21.<FormattedMessage id="gramAdarshTakta.akrushakAkarniMagnichi" /></span>
+</b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >चालू वर्ष   - </td>
+          <td>{this.props.data.akrushakTotalDemand || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>मागील वर्ष - </td>
+          <td>{this.props.data.akrushakTotalDemandPrevious || ' '}</td>
+        </tr>
+   
+      </tbody>
+    </table>
+  </td>
+</tr>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
-                  {/* <td>{}</td>
-                  <td>{}</td> */}
-                </tr>
-                           <tr>
-                  <td>
-                    <b>
-                      <span>21.<FormattedMessage id="gramAdarshTakta.akrushakAkarniMagnichi" /></span>
-                    </b>
-                  </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
-                  {/* <td>{}</td>
-                  <td>{}</td> */}
-                </tr>
-                           <tr>
-                  <td>
-                    <b>
-                      <span>22.<FormattedMessage id="gramAdarshTakta.etarMahsulMagani" /></span>
-                    </b>
-                  </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
-                  {/* <td>{}</td>
-                  <td>{}</td> */}
-                </tr>
+
+ <tr>
+                  
+  <td colSpan={4} style={{fontWeight:'bold'}} className="fw-bold text-center">
+   <span>22.<FormattedMessage id="gramAdarshTakta.etarMahsulMagani" /></span>
+  </td>
+</tr>
+<tr>
+  <td>
+    <b>अ) शिक्षण उपकर  </b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >चालू वर्ष   - </td>
+          <td>{this.props.data.educationalCessCurrent || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>मागील वर्ष   - </td>
+          <td>{this.props.data.educationalCessPrevious || ' '}</td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td>
+    <b> ब) रोजगार हमी  </b>
+  </td>
+  <td>
+    <table className="table table-bordered mt-2 w-100">
+      <thead></thead>
+      <tbody>
+        <tr> 
+          <td style={{fontWeight:'bold'}} >चालू वर्ष   - </td>
+          <td>{this.props.data.employeeGuaranteeSchemeCurrent || ' '}</td>
+        </tr>
+        <tr>
+          <td style={{fontWeight:'bold'}}>मागील वर्ष  - </td>
+          <td>{this.props.data.employeeGuaranteeSchemePrevious || ' '}</td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+
+
+
+
                            <tr>
                   <td>
                     <b>
@@ -552,7 +665,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.averageRainfall || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -563,10 +676,11 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.kurancheKshetra || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
+                
                 <tr>
   <td>
     <b>25. <FormattedMessage id="gramAdarshTakta.irrigationWells" />
@@ -578,11 +692,11 @@ class ComponentToPrint extends React.Component {
       <tbody>
         <tr> 
           <td style={{fontWeight:'bold'}} >वापरात असलेल्या विहीरिंची संख्या   - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.irrWellsUsed || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>वापरात नसलेल्या विहीरिंची संख्या   - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.irrWellsUnused || ' '}</td>
         </tr>
    
       </tbody>
@@ -597,7 +711,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.bagayatArea || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -608,7 +722,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.kurancheKshetra || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -624,11 +738,11 @@ class ComponentToPrint extends React.Component {
       <tbody>
         <tr> 
           <td style={{fontWeight:'bold'}} >शिंग असलेली  - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.animalWithHorn || ' '}</td>
         </tr>
         <tr>
           <td style={{fontWeight:'bold'}}>शिंग नसलेली   - </td>
-          <td>{this.props.data.craftaman}</td>
+          <td>{this.props.data.animalWithoutHorn || ' '}</td>
         </tr>
    
       </tbody>
@@ -649,7 +763,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.gramPanchayatOrGroupGramPanchayat || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -660,7 +774,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.panchayatCommittee || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -671,7 +785,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.judiciary || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -682,7 +796,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.nearestPoliceStation || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -693,7 +807,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.postalOffice || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -704,7 +818,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.primarySchool || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -715,7 +829,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.secondarySchool}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -726,7 +840,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.secondarySchool || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -737,7 +851,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.college || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -748,7 +862,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.publicHospital|| ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -759,7 +873,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.transport || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -770,7 +884,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.coOrganization || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -781,7 +895,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.coOperativeFactories || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -792,7 +906,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.nearestRailwayStation || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -803,7 +917,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.total_eseva_kendra || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -818,7 +932,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.rashanShopCount || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -830,7 +944,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.sarpanchName || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -842,7 +956,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.policePatilName || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>
@@ -854,7 +968,7 @@ class ComponentToPrint extends React.Component {
                     </b>
                   </td>
 
-                  <td>{this.props.data.kurancheKshetra}</td>
+                  <td>{this.props.data.kotwalName || ' '}</td>
                   {/* <td>{}</td>
                   <td>{}</td> */}
                 </tr>

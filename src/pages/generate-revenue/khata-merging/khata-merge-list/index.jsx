@@ -197,6 +197,7 @@ function khataMerging() {
     const inputParamsForMerge = {
       ...objForMergingTheModal,
       khataNo: mainKhata,
+      revenueYear:revenueYear
     };
     setSearchButtonState(true);
 
@@ -204,6 +205,7 @@ function khataMerging() {
       `${URLS.BaseURL}/khatamerge/saveMergeDtl`,
       'POST',
       inputParamsForMerge,
+      
       (res) => {
         {
           if (res.status === 200) {
@@ -286,9 +288,12 @@ function khataMerging() {
     setIsLoading(true);
     setDisableButtonForMerge(true);
     setSearchButtonState(true);
+// let params={
+//         revenueYear:revenueYear
 
+// }
     sendRequest(
-      `${URLS.BaseURL}/khatamerge/getKhataMergeDetails?cCode=${codeVillage}`,
+`${URLS.BaseURL}/khatamerge/getKhataMergeDetails?cCode=${codeVillage}&revenueYear=${revenueYear}`,
       'GET',
       null,
       (res) => {
@@ -461,16 +466,16 @@ function khataMerging() {
       <PageContainer>
         <Card>
           <Row>
-            <Col xl={12} lg={12} md={10} sm={6} xs={6}>
-              <VillageSelector
-                pageType="withoutYear"
-                setCodeVillage={setCodeVillage}
-                setTextForVillage={setTextForVillage}
-                onVillageChange={(setVillage, setMergeData)}
-                yearChange={setRevenueYear}
-                setIsNirank={setIsNirank}
-              />
-            </Col>
+            <Col xl={21} lg={21} md={21} sm={24} xs={24}>
+                       <VillageSelector
+                         pageType="withYear"
+                         setCodeVillage={setCodeVillage}
+                         setTextForVillage={setTextForVillage}
+                         onVillageChange={(setVillage)}
+                         yearChange={setRevenueYear}
+                         setIsNirank={setIsNirank}
+                       />
+                     </Col>
 
             <Col xl={2} lg={2} md={2} sm={2} xs={2}>
               {/* {isNirank1 == false && ( */}
@@ -489,6 +494,7 @@ function khataMerging() {
               </Button>
               {/* )} */}
             </Col>
+            
           </Row>
 
           <Row>

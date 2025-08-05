@@ -80,26 +80,30 @@ function GChallan() {
     setLGDCode(sorting.shift());
   }, []);
 
-  function getJm(assessment, jmBindumala, jmDumala, preYearPendingJm, area) {
+  function getJm(assessment, jmBindumala, jmDumala, preYearPendingJm, area,jmVajasut,zpVajasut,gpVajasut) {
     let jm = null;
 
     // if (assessment <= 5) {
-    if (jmBindumala <= 5) {
-      jm = preYearPendingJm + jmDumala;
-    } else if ((jmBindumala >= 5 && jmBindumala <= 10) || area <= 3) {
-      jm = preYearPendingJm + jmDumala;
-    } else {
-      jm = jmBindumala + jmDumala + preYearPendingJm;
-    }
+    // if (jmBindumala <= 5) {
+    //   jm = preYearPendingJm + jmDumala;
+    // } else if ((jmBindumala >= 5 && jmBindumala <= 10) || area <= 3) {
+    //   jm = preYearPendingJm + jmDumala;
+    // } else {
+    //   jm = jmBindumala + jmDumala + preYearPendingJm;
+    // }
 
+jm=(jmBindumala + jmDumala + preYearPendingJm)-(jmVajasut-zpVajasut-gpVajasut)
+
+console.log(jm,"check jm")
+    
     // else if (jmBindumala > 10 && area <= 3) {
     //   jm = jm = preYearPendingJm + jmDumala;
     // }
-    // console.log('jmBindumala kutai re', jmBindumala);
+    // console.log('jmBindumala ku
+    // tai re', jmBindumala);
     // console.log('jmDumala kutai re', jmDumala);
 
-    return jm;
-  }
+return jm  }
 
   function getZP(
     assessment,
@@ -281,7 +285,7 @@ function GChallan() {
             addlEducationalCess: r.addlEducationalCess + r.preYearPendingAddlEducationalCess,
             employeeGuaranteeScheme:
               r.employeeGuaranteeScheme + r.preYearPendingEmployeeGuaranteeScheme,
-            JM: getJm(r.assessment, r.jmBindumala, r.jmDumala, r.preYearPendingJm, r.area),
+            JM: getJm(r.assessment, r.jmBindumala, r.jmDumala, r.preYearPendingJm, r.area,r.jmVajasut,r.zpVajasut,r.gpVajasut),
             // JM: getJm(r.assessment, r.jmBindumala, r.jmDumala, r.preYearPendingJm),
             ZP: getZP(
               r.assessment,
@@ -396,7 +400,6 @@ function GChallan() {
     onChange: (selectedRowKeys, selectedRows) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       // console.log(selectedRowKeys);
-
       var totalAmount = 0;
       var totalJM = 0;
       var totalZP = 0;

@@ -483,7 +483,7 @@ function NirankForm() {
       </Card>
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
         <CircularProgress color="inherit" />
-      </Backdrop>
+      </Backdrop>   
       <Card>
         <Alert
           message="टीप"

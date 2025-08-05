@@ -17,6 +17,8 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
+import VillageSelector from '@/components/eComponents/VillageSelector';
+
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'umi';
 import moment from 'moment';
@@ -45,6 +47,9 @@ function GramAdarshChart() {
   const [villageSajjaName, setVillageSajjaName] = useState();
   const [kuranArea, setKuranArea] = useState('');
   const [bagayatArea, setBagayatArea] = useState('');
+    const [village, setVillage] = useState([]);
+    const [dataSoruce, setDataSource] = useState([]);
+    const [isNirank, setIsNirank] = useState(false);
   const [mahsulMagniAll, setMahsulMagniAll] = useState({
     current: {
       niyat: 0,
@@ -57,6 +62,7 @@ function GramAdarshChart() {
       total: 0,
     },
   });
+  const VillageCCodeL = localStorage.getItem('selectedvillage');
 
   // Initialize state with matching keys
   const [itaritarmaganiData, setItaritarmaganiData] = useState({
@@ -155,7 +161,6 @@ function GramAdarshChart() {
     form15.setFieldsValue({ totalPopulation: total });
   }, [population.male, population.female]);
   useEffect(() => {
-    setCodeVillage(villageData[0].cCode);
 
     const result = villageData.filter(
       (thing, index, self) =>
@@ -189,12 +194,11 @@ function GramAdarshChart() {
   };
 
   const getAllTaxCalculationBycCode = async () => {
-    const VillageCCode = villageData[0].cCode;
 
     sendRequest(
       // `${URLS.BaseURL}/gramAdarshTakta/getAllTaxCalculationBycCode?ccode=272400110296420000`,
       // console.log(codeVillage,"codeVillage==========================================1"),
-      `${URLS.BaseURL}/gramAdarshTakta/getAllTaxCalculationBycCode?ccode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getAllTaxCalculationBycCode?ccode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -248,11 +252,10 @@ function GramAdarshChart() {
     );
   };
   const getForestAndGaothanKshetra = async () => {
-    const VillageCCode = villageData[0].cCode;
-    console.log(villageData[0].cCode, 'villageData==========================================');
+
     sendRequest(
       // `${URLS.BaseURL}/gramAdarshTakta/getForestAndGaothanKshetra?cCode=272400110296420000`,
-      `${URLS.BaseURL}/gramAdarshTakta/getForestAndGaothanKshetra?cCode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getForestAndGaothanKshetra?cCode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -275,11 +278,10 @@ function GramAdarshChart() {
     setKhatedarKshetra({ ...khatedarKshetra, entries: newEntries });
   };
   const getKhatedarCountAndBelowArea = async () => {
-    const VillageCCode = villageData[0].cCode;
-    console.log(villageData[0].cCode, 'villageData==========================================');
+
     sendRequest(
       // `${URLS.BaseURL}/gramAdarshTakta/getForestAndGaothanKshetra?cCode=272400110296420000`,
-      `${URLS.BaseURL}/gramAdarshTakta/getKhatedarCountAndBelowArea?ccode=${VillageCCode}&revenueYear=2024-25`,
+      `${URLS.BaseURL}/gramAdarshTakta/getKhatedarCountAndBelowArea?ccode=${VillageCCodeL}&revenueYear=2024-25`,
 
       'GET',
       null,
@@ -308,12 +310,11 @@ function GramAdarshChart() {
   };
 
   const getAkrushakAndPothkhrabAreaByccode = async () => {
-    const VillageCCode = villageData[0].cCode;
 
     sendRequest(
       // `${URLS.BaseURL}/gramAdarshTakta/getAllTaxCalculationBycCode?ccode=272400110296420000`,
       // console.log(codeVillage,"codeVillage==========================================1"),
-      `${URLS.BaseURL}/gramAdarshTakta/getAkrushakAndPothkhrabAreaByccode?ccode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getAkrushakAndPothkhrabAreaByccode?ccode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -339,9 +340,8 @@ function GramAdarshChart() {
   };
 
   const getMahsulMafKshetra = () => {
-    const VillageCCode = villageData[0].cCode;
     sendRequest(
-      `${URLS.BaseURL}/gramAdarshTakta/getMahasulMafOrKamakariJaminiData?cCode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getMahasulMafOrKamakariJaminiData?cCode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -357,10 +357,9 @@ function GramAdarshChart() {
   };
 
   const getJalSInchanWellData = async () => {
-    const VillageCCode = villageData[0].cCode;
 
     sendRequest(
-      `${URLS.BaseURL}/gramAdarshTakta/getJalsinchanWellCountByccode?cCode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getJalsinchanWellCountByccode?cCode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -387,9 +386,8 @@ function GramAdarshChart() {
   };
 
   const getBindumalaAndDumalaAreas = async () => {
-    const VillageCCode = villageData[0].cCode;
     sendRequest(
-      `${URLS.BaseURL}/gramAdarshTakta/getBindumalaAndDumalaAreas?ccode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getBindumalaAndDumalaAreas?ccode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -409,9 +407,8 @@ function GramAdarshChart() {
     );
   };
   const getKuranandBagayatAreas = async () => {
-    const VillageCCode = villageData[0].cCode;
     sendRequest(
-      `${URLS.BaseURL}/gramAdarshTakta/getKuranAndBagayatAreaByccode?cCode=${VillageCCode}`,
+      `${URLS.BaseURL}/gramAdarshTakta/getKuranAndBagayatAreaByccode?cCode=${VillageCCodeL}`,
 
       'GET',
       null,
@@ -1870,7 +1867,7 @@ await cropForm.validateFields();
               dataSource={waterSypplytype}
               pagination={false}
               bordered
-              size="medium"
+              size="small"
             />
           </Form>
           <h3 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 8 }}>प्रमुख पिके </h3>
@@ -2193,7 +2190,7 @@ await cropForm.validateFields();
   return (
     <>
       <Card>
-        <Row>
+          <Row>
           <Col xl={8} lg={8} md={8} sm={24} xs={24}></Col>
           <Col xl={8} lg={8} md={8} sm={24} xs={24}>
             <h2>
@@ -2202,27 +2199,16 @@ await cropForm.validateFields();
           </Col>
           <Col xl={8} lg={8} md={8} sm={24} xs={24}></Col>
         </Row>
-        <Form layout="horizontal">
-          <Row style={{ marginTop: 10 }}>
-            <Col xl={5} lg={5} md={24} sm={24} xs={24}>
-              <Form.Item label={<FormattedMessage id="villageSelector.label.district" />}>
-                <Select disabled placeholder={districtName}></Select>
-              </Form.Item>
-            </Col>
-            <Col xl={1} lg={1}></Col>
-            <Col xl={5} lg={5} md={24} sm={24} xs={24}>
-              <Form.Item label={<FormattedMessage id="villageSelector.label.taluka" />}>
-                <Select disabled placeholder={talukaName}></Select>
-              </Form.Item>
-            </Col>
-            <Col xl={1} lg={1}></Col>
-            <Col xl={5} lg={5} md={24} sm={24} xs={24}>
-              <Form.Item label={<FormattedMessage id="villageSelector.label.village" />}>
-                <Select disabled placeholder={villageData[0].villageName}></Select>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
+        <VillageSelector
+                  pageType="withoutYear"
+                  setCodeVillage={setCodeVillage}
+                  setTextForVillage={setTextForVillage}
+                  onVillageChange={setVillage}
+                  yearChange={setRevenueYear}
+                  setIsNirank={setIsNirank}
+                />
+      
+
       </Card>
 
       <Card>

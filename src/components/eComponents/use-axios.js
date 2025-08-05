@@ -122,7 +122,7 @@ const useAxios = () => {
             callback(response);
           })
           .catch((error) => {
-            console.log('error', error);
+            console.log('error ssm', error);
             message.error(error.response.data.message);
             if (errorCallback) {
               errorCallback(error.response);

@@ -56,7 +56,8 @@ function ReceiptPrint(props) {
             village={location.state?.village}
             khataNo={location.state?.khataNo}
             makhtaKhataNo={location.state?.makhtaKhataNo}
-            LR={location.state?.lrAmount <= 5 ? 0 : location.state?.lrAmount}
+            // LR={location.state?.lrAmount <= 5 ? 0 : location.state?.lrAmount}
+            LR={location.state?.lrAmount}
             ZP={location.state?.zpAmount}
             VP={location.state?.gvAmount}
             AkrushikLR={location.state?.lrAmountAkrushik}
@@ -144,6 +145,9 @@ class ComponentToPrint extends React.Component {
                   <strong>
                     <h5>क्रमांक: {this.props.receiptNo}</h5>
                   </strong>
+                  <strong>
+                  <h5>दिनांक: {this.props.receiptDate}</h5>
+                </strong>
                 </Col>
               </Row>
               <div style={{ float: 'right' }}></div>
@@ -338,13 +342,13 @@ class ComponentToPrint extends React.Component {
               <Row>
                 <Col span={8}></Col>
                 <Col span={6}></Col>
-                <Col span={10}>
+                {/* <Col span={10}>
                   <tr>
                     <td>नाव : </td>
 
                     <td>{this.props.marathiName}</td>
                   </tr>
-                </Col>
+                </Col> */}
               </Row>
               <Row>
                 <Col span={8}></Col>

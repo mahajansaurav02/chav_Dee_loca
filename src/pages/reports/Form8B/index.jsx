@@ -27,7 +27,7 @@ function Report8B() {
 
   const [tableData, setTableData] = useState();
   const history = useHistory();
-  const [revenueYear, setRevenueYear] = useState('2024-25');
+  const [revenueYear, setRevenueYear] = useState('2025-26');
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
@@ -73,7 +73,7 @@ function Report8B() {
       //     `${URLS.BaseURL}/reports/landRevenueForm8BView?cCode=${codeVillage}&revenueYear=${revenueYear}&districtCode=${districtCode}&talukaCode=${talukaCode}`
       //   : `${URLS.BaseURL}/reports/landRevenueForm8BViewPre?cCode=${codeVillage}&revenueYear=${revenueYear}&districtCode=${districtCode}&talukaCode=${talukaCode}`,
 
-      `${URLS.BaseURL}/reports/landRevenueForm8B?cCode=${codeVillage}&revenueYear=${revenueYear}&districtCode=${districtCode}&talukaCode=${talukaCode}`,
+      `${URLS.BaseURL}/reports/landRevenueForm8BView?cCode=${codeVillage}&revenueYear=${revenueYear}&districtCode=${districtCode}&talukaCode=${talukaCode}`,
       'POST',
       null,
       (res) => {
@@ -211,6 +211,7 @@ function Report8B() {
                 <Select.Option value="2022-23">2022-23</Select.Option>
                 <Select.Option value="2023-24">2023-24</Select.Option>
                 <Select.Option value="2024-25">2024-25</Select.Option>
+                <Select.Option value="2024-25">2025-26</Select.Option>
               </Select>
             </Form.Item>
           </Col>

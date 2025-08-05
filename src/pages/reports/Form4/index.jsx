@@ -28,7 +28,7 @@ function VillageForm() {
   const [tableData, setTableData] = useState();
   const [isNirank, setIsNirank] = useState(false);
   const [villageForm17, setVillageForm17] = useState();
-  const [revenueYear, setRevenueYear] = useState('2024-25');
+  const [revenueYear, setRevenueYear] = useState('2025-26');
   const componentRef = useRef();
   const [revenueYearForVillage, setRevenueYearForVillage] = useState();
 
@@ -72,6 +72,7 @@ function VillageForm() {
             caseNo: r.caseNo,
             personLiable: r.personLiable,
             khataNo: r.khataNo,
+makhtaKhataNo: r.makhtaKhataNo,
 
             localCess: r.localCess,
             localCessAmount: r.localCessAmount,
@@ -287,8 +288,9 @@ class ComponentToPrint extends React.Component {
                   <td>{i + 1}</td>
                   <td>{r.caseNo}</td>
                   <td>{r.personLiable}</td>
-                  <td>{r.khataNo}</td>
-                  <td>{r.localCess}</td>
+<td>
+  {r.khataNo && r.khataNo.trim() !== "" ? r.khataNo : r.makhtaKhataNo}
+</td>                  <td>{r.localCess}</td>
                   <td>{r.localCessAmount}</td>
                   <td>{r.amountOfZp}</td>
                   <td>{r.amountOfGp}</td>
